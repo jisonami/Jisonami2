@@ -1,0 +1,11 @@
+/* 底部声明样式  */
+.footer{
+	margin:0 auto;
+	padding:15px;
+	width:930px;
+	height:16px;
+/* 	background:#E2E2E2; */
+}
+.copyright{
+	margin-left:26%;
+}

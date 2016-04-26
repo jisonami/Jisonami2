@@ -1,0 +1,22 @@
+@import "../common/common.css";
+
+#registerForm{
+	margin:150px auto;
+	padding:80px;
+	height:100px;
+	width:280px;
+	background:#E6E6E6;
+/* 	border:1px solid #A0A0A0; */
+}
+#user{
+	margin:10px;
+}
+#pass{
+	margin:10px;
+}
+#verifyPadd{
+	margin:10px;
+}
+#control{
+	margin:10px;
+}

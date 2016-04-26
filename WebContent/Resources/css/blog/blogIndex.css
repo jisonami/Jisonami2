@@ -1,0 +1,24 @@
+@import "../common/common.css";
+
+/* 中间内容样式 */
+.content{
+	margin:5px auto;
+	padding:0px;
+/* 	background:#E2E2E2; */
+	width:960px;
+	height:720px;
+/* 	border:1px solid #A0A0A0; */
+}
+#blogmenu{
+	float:left;
+	padding:20px;
+	width:170px;
+	border:1px solid #A0A0A0;
+}
+#blogcontent{
+	float:right;
+	padding:15px;
+	width:700px;
+	border:1px solid #A0A0A0;
+}
+

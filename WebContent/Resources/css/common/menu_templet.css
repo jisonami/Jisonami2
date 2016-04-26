@@ -1,0 +1,19 @@
+/* 顶部Logo和菜单样式 */
+.headermenu{
+	margin:0px auto;
+	padding:5px;
+	width:930px;
+}
+#logo{
+	float:left;
+}
+#menu{
+	float:right;
+	width:800px;
+}
+#sitemenu{
+	float:left;
+}
+#usermenu{
+	float:right;
+}
