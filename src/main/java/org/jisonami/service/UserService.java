@@ -4,26 +4,29 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.jisonami.entity.User;
 import org.jisonami.sql.DBUtils;
 import org.jisonami.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+	
+	@Autowired
+	DataRepository repository;
+	
 	public boolean validate(User user) throws SQLException{
-		Connection conn = DBUtils.getConnection();
-		String sql = "select name,password from t_user t where t.name = ? and t.password = ?";
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		preStmt.setString(1, user.getName());
-		preStmt.setString(2, user.getPassword());
-		ResultSet rs = preStmt.executeQuery();
-		boolean hasNextRow = rs.next();
-		rs.close();
-		preStmt.close();
-		conn.close();
-		if(hasNextRow){
+		String hql = "from User as u where u.name = :name and u.password = :password";
+		Map<String, Object> queryParam = new HashMap<String, Object>();
+		queryParam.put("name", user.getName());
+		queryParam.put("password", user.getPassword());
+		List<User> users = repository.queryAll(hql, queryParam);
+		if(users!=null && users.size()>0){
 			return true;
 		}
 		return false;
