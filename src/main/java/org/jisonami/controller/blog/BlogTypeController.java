@@ -1,6 +1,5 @@
 package org.jisonami.controller.blog;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +31,7 @@ public class BlogTypeController {
 		blogType.setBlogAuthor(username);
 		blogType.setName(blogTypeName);
 		boolean result = false;
-		try {
-			result = blogTypeService.save(blogType);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		result = blogTypeService.save(blogType);
 		if(result){
 			Map<BlogType,Integer> blogTypeInfo = queryBlogTypeInfo(username);
 			model.put("blogTypeInfo", blogTypeInfo);
@@ -49,11 +44,7 @@ public class BlogTypeController {
 	@RequestMapping(value="blogTypeDelete.do")
 	public String blogTypeDelete(String blogTypeId, @ModelAttribute("username") String username, ModelMap model){
 		boolean result = false;
-		try {
-			result = blogTypeService.delete(blogTypeId);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		result = blogTypeService.delete(blogTypeId);
 		if(result){
 			Map<BlogType,Integer> blogTypeInfo = queryBlogTypeInfo(username);
 			model.put("blogTypeInfo", blogTypeInfo);
@@ -73,18 +64,10 @@ public class BlogTypeController {
 	private Map<BlogType, Integer> queryBlogTypeInfo(String author){
 		Map<BlogType,Integer> blogTypeInfo = new HashMap<BlogType,Integer>();
 		List<BlogType> blogTypes = null;
-		try {
-			blogTypes = blogTypeService.queryByAuthor(author);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		blogTypes = blogTypeService.queryByAuthor(author);
 		for (BlogType bt : blogTypes) {
-			try {
-				int blogCount = blogService.blogCountByBlogType(bt.getId());
-				blogTypeInfo.put(bt, blogCount);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			int blogCount = blogService.blogCountByBlogType(bt.getId());
+			blogTypeInfo.put(bt, blogCount);
 		}
 		return blogTypeInfo;
 	}

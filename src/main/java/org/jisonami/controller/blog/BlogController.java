@@ -1,7 +1,5 @@
 package org.jisonami.controller.blog;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -73,14 +71,11 @@ public class BlogController {
 		Blog blog = new Blog();
 		BeanUtils.copyProperties(blogVO, blog);
 		blog.setId(blogId);
+		blog.setAuthor(username);
 		blog.setBlogType(blogVO.getBlogTypeIds());
 		blog.setEditTime(new Date());
 		boolean result = false;
-		try {
-			result = blogService.edit(blog);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		result = blogService.edit(blog);
 		if(result){
 			// 查询该用户下的所有博客
 			List<Blog> blogs;
@@ -103,11 +98,7 @@ public class BlogController {
 	@RequestMapping("delete.do")
 	public String delete(String blogId, @ModelAttribute("username") String username, ModelMap model){
 		boolean result = false;
-		try {
-			result = blogService.delete(blogId);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		result = blogService.delete(blogId);
 		if(result){
 			// 查询该用户下的所有博客
 			List<Blog> blogs;
@@ -148,11 +139,7 @@ public class BlogController {
 	@RequestMapping("ViewForward.do")
 	public String viewForward(String blogId, ModelMap model){
 		Blog blog = null;
-		try {
-			blog = blogService.queryById(blogId);
-		} catch (SQLException | IOException e) {
-			e.printStackTrace();
-		}
+		blog = blogService.queryById(blogId);
 		if(blog!=null){
 			model.put("blog", blog);
 		}
@@ -163,11 +150,7 @@ public class BlogController {
 		for(int i=0;i<blogTypeIdList.size();i++){
 			String blogTypeId = blogTypeIdList.get(i);
 			BlogType blogType = null;
-			try {
-				blogType = blogTypeService.queryById(blogTypeId);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			blogType = blogTypeService.queryById(blogTypeId);
 			if(i < blogTypeIdList.size()-1){
 				blogTypes = blogTypes + blogType.getName() + ",";
 			} else {
@@ -186,11 +169,7 @@ public class BlogController {
 	@RequestMapping("EditForward.do")
 	public String editForward(String blogId, @ModelAttribute("username") String username, ModelMap model){
 		Blog blog = null;
-		try {
-			blog = blogService.queryById(blogId);
-		} catch (SQLException | IOException e) {
-			e.printStackTrace();
-		}
+		blog = blogService.queryById(blogId);
 		if(blog!=null){
 			model.put("blog", blog);
 		}
@@ -201,11 +180,7 @@ public class BlogController {
 		for(int i=0;i<blogTypeIdList.size();i++){
 			String blogTypeId = blogTypeIdList.get(i);
 			BlogType blogType = null;
-			try {
-				blogType = blogTypeService.queryById(blogTypeId);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			blogType = blogTypeService.queryById(blogTypeId);
 			if(i < blogTypeIdList.size()-1){
 				blogTypes = blogTypes + blogType.getName() + ",";
 			} else {
@@ -220,11 +195,7 @@ public class BlogController {
 		}
 		
 		List<BlogType> blogTypeList = null;
-		try {
-			blogTypeList = blogTypeService.queryByAuthor(username);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		blogTypeList = blogTypeService.queryByAuthor(username);
 		model.put("blogTypeList", blogTypeList);
 		
 		return "/blog/edit";
@@ -233,11 +204,7 @@ public class BlogController {
 	@RequestMapping("publishForward.do")
 	public String publishForward(@ModelAttribute("username") String username, ModelMap model){
 		List<BlogType> blogTypeList = null;
-		try {
-			blogTypeList = blogTypeService.queryByAuthor(username);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		blogTypeList = blogTypeService.queryByAuthor(username);
 		model.put("blogTypeList", blogTypeList);
 		return "/blog/publish";
 	}

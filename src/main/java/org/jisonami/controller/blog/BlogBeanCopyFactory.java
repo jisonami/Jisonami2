@@ -1,7 +1,5 @@
 package org.jisonami.controller.blog;
 
-import java.sql.SQLException;
-
 import org.jisonami.entity.Blog;
 import org.jisonami.entity.BlogType;
 import org.jisonami.service.BlogTypeService;
@@ -33,15 +31,11 @@ public class BlogBeanCopyFactory{
 		String[] blogTypeIdArray = blogTypeIds.split(",");
 		String blogTypeNames = "";
 		for (String blogTypeId : blogTypeIdArray) {
-			try {
-				BlogType blogType = blogTypeService.queryById(blogTypeId);
-				if("".equals(blogTypeNames)){
-					blogTypeNames = blogTypeNames + blogType.getName();
-				} else {
-					blogTypeNames = blogTypeNames + "," + blogType.getName();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
+			BlogType blogType = blogTypeService.queryById(blogTypeId);
+			if("".equals(blogTypeNames)){
+				blogTypeNames = blogTypeNames + blogType.getName();
+			} else {
+				blogTypeNames = blogTypeNames + "," + blogType.getName();
 			}
 		}
 		blogVO.setBlogTypeNames(blogTypeNames);

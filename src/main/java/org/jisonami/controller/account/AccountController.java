@@ -1,6 +1,5 @@
 package org.jisonami.controller.account;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,25 +67,14 @@ public class AccountController {
 		User user = new User();
 		BeanUtils.copyProperties(userVO, user);
 		user.setName(userVO.getUsername());
-		try {
-			if(userService.exits(user)){
-				// 提示该用户已注册
-				model.put("error", "用户名已存在！");
-				return "../../register";
-			} else {
-				// 将用户信息存到数据库
-				try {
-					userService.save(user);
-				} catch (SQLException e) {
-					e.printStackTrace();
-					// 提示注册失败
-				}
-				// 提示注册成功，3秒后并跳转到登陆页面
-				return "../../login";
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if(userService.exits(user)){
+			// 提示该用户已注册
+			model.put("error", "用户名已存在！");
+			return "../../register";
+		} else {
+			// 将用户信息存到数据库
+			userService.save(user);
+			return "../../login";
 		}
-		return "../../register";
 	}
 }

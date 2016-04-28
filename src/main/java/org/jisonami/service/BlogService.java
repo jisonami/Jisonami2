@@ -1,183 +1,62 @@
 package org.jisonami.service;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jisonami.entity.Blog;
-import org.jisonami.sql.DBUtils;
-import org.jisonami.util.JDBCUtils;
-import org.jisonami.util.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 public class BlogService {
-	public boolean save(Blog blog) throws SQLException{
-		blog.setId(StringUtils.generateUUID());
-		Connection conn = DBUtils.getConnection();
-		String sql = "insert into t_blog(id, title, content, author, blogType, publishTime) values(?, ?, ?, ?, ?, ?)";
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		preStmt.setString(1, blog.getId());
-		preStmt.setString(2, blog.getTitle());
-		preStmt.setString(3, blog.getContent());
-		preStmt.setString(4, blog.getAuthor());
-		preStmt.setString(5, blog.getBlogType());
-		preStmt.setTimestamp(6, new Timestamp(blog.getPublishTime().getTime()));
-		int rowChange = preStmt.executeUpdate();
-		preStmt.close();
-		conn.close();
-		if(rowChange != 0){
-			return true;
-		}
-		return false;
-	}
-	public boolean delete(String id) throws SQLException{
-		Connection conn = DBUtils.getConnection();
-		String sql = "delete from t_blog t where t.id = ?";
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		preStmt.setString(1, id);
-		int rowChanges = preStmt.executeUpdate();
-		preStmt.close();
-		conn.close();
-		if(rowChanges != 0){
-			return true;
-		} else {
+	
+	@Autowired
+	DataRepository repository;
+	
+	public boolean save(Blog blog) {
+		String id = repository.add(blog);
+		if(StringUtils.isEmpty(id)){
 			return false;
 		}
+		return true;
 	}
-	public boolean edit(Blog blog) throws SQLException{
-		Connection conn = DBUtils.getConnection();
-		String sql = "update t_blog t set t.title = ? , t.content = ? , t.blogtype = ? , t.edittime = ? where t.id = ?";
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		preStmt.setString(1, blog.getTitle());
-		preStmt.setString(2, blog.getContent());
-		preStmt.setString(3, blog.getBlogType());
-		preStmt.setTimestamp(4, new Timestamp(blog.getEditTime().getTime()));
-		preStmt.setString(5, blog.getId());
-		int rowChanges = preStmt.executeUpdate();
-		preStmt.close();
-		conn.close();
-		if(rowChanges != 0){
-			return true;
-		} else {
-			return false;
+	public boolean delete(String id) {
+		return repository.delete(Blog.class, id);
+	}
+	public boolean edit(Blog blog) {
+		return repository.edit(blog);
+	}
+	public List<Blog> query() {
+		String hql = "from Blog";
+		return repository.query(hql);
+	}
+	public Blog queryById(String id) {
+		return repository.queryOne(Blog.class, id);
+	}
+	public List<Blog> queryByAuthor(String author) {
+		String hql = "from Blog as b where b.author = :author";
+		Map<String, Object> queryParam = new HashMap<String, Object>();
+		queryParam.put("author", author);
+		return repository.query(hql, queryParam);
+	}
+	public List<Blog> queryByBlogType(String blogTypeId) {
+		// TODO 注意检查hql的模糊查询
+		String hql = "from Blog as b where b.blogType like :blogType";
+		Map<String, Object> queryParam = new HashMap<String, Object>();
+		queryParam.put("blogType", "%"+blogTypeId+"%");
+		return repository.query(hql, queryParam);
+	}
+	public int blogCountByBlogType(String blogTypeId) {
+		String hql = "from Blog as b where b.blogType like :blogType";
+		Map<String, Object> queryParam = new HashMap<String, Object>();
+		queryParam.put("blogType", "%"+blogTypeId+"%");
+		List<Blog> blogs = repository.query(hql, queryParam);
+		if(blogs == null){
+			return 0;
 		}
-	}
-	public List<Blog> query() throws SQLException, IOException{
-		Connection conn = DBUtils.getConnection();
-		String sql = "select * from t_blog";
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		ResultSet rs = preStmt.executeQuery();
-		
-		List<Blog> blogs = new ArrayList<Blog>();
-		while(rs.next()){
-			Blog blog = new Blog();
-			blog.setId(rs.getString("id"));
-			blog.setTitle(rs.getString("title"));
-			blog.setContent(JDBCUtils.clobToString(rs.getClob("content")));
-			blog.setAuthor(rs.getString("author"));
-			blog.setBlogType(rs.getString("blogtype"));
-			blog.setPublishTime(rs.getTimestamp("publishTime"));
-			blogs.add(blog);
-		}
-		
-		rs.close();
-		preStmt.close();
-		conn.close();
-		return blogs;
-	}
-	public Blog queryById(String id) throws SQLException, IOException{
-		Connection conn = DBUtils.getConnection();
-		String sql = "select * from t_blog t where t.id = ?";
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		preStmt.setString(1, id);
-		ResultSet rs = preStmt.executeQuery();
-		
-		// 根据id查应该是只有一行数据的
-		Blog blog = new Blog();
-		if(rs.next()){
-			blog.setId(rs.getString("id"));
-			blog.setTitle(rs.getString("title"));
-			blog.setBlogType(rs.getString("blogtype"));
-			blog.setAuthor(rs.getString("author"));
-			blog.setContent(JDBCUtils.clobToString(rs.getClob("content")));
-			blog.setPublishTime(rs.getTimestamp("publishTime"));
-		}
-		
-		rs.close();
-		preStmt.close();
-		conn.close();
-		return blog;
-	}
-	public List<Blog> queryByAuthor(String author) throws SQLException, IOException{
-		Connection conn = DBUtils.getConnection();
-		String sql = "select * from t_blog t where t.author = ?";
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		preStmt.setString(1, author);
-		ResultSet rs = preStmt.executeQuery();
-		
-		List<Blog> blogs = new ArrayList<Blog>();
-		while(rs.next()){
-			Blog blog = new Blog();
-			blog.setId(rs.getString("id"));
-			blog.setTitle(rs.getString("title"));
-			blog.setContent(JDBCUtils.clobToString(rs.getClob("content")));
-			blog.setAuthor(rs.getString("author"));
-			blog.setBlogType(rs.getString("blogtype"));
-			blog.setPublishTime(rs.getTimestamp("publishTime"));
-			blogs.add(blog);
-		}
-		
-		rs.close();
-		preStmt.close();
-		conn.close();
-		return blogs;
-	}
-	public List<Blog> queryByBlogType(String blogTypeId) throws SQLException, IOException{
-		Connection conn = DBUtils.getConnection();
-		String sql = "select * from t_blog t where t.blogtype like ?";
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		preStmt.setString(1, "%"+blogTypeId+"%");
-		ResultSet rs = preStmt.executeQuery();
-		
-		List<Blog> blogs = new ArrayList<Blog>();
-		while(rs.next()){
-			Blog blog = new Blog();
-			blog.setId(rs.getString("id"));
-			blog.setTitle(rs.getString("title"));
-			blog.setContent(JDBCUtils.clobToString(rs.getClob("content")));
-			blog.setAuthor(rs.getString("author"));
-			blog.setBlogType(rs.getString("blogtype"));
-			blog.setPublishTime(rs.getTimestamp("publishTime"));
-			blogs.add(blog);
-		}
-		
-		rs.close();
-		preStmt.close();
-		conn.close();
-		return blogs;
-	}
-	public int blogCountByBlogType(String blogTypeId) throws SQLException{
-		Connection conn = DBUtils.getConnection();
-		String sql = "select * from t_blog t where t.blogtype like ?";
-		PreparedStatement preStmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-		preStmt.setString(1, "%"+blogTypeId+"%");
-		ResultSet rs = preStmt.executeQuery();
-		rs.last();
-		int rowCount = rs.getRow();
-		rs.close();
-		preStmt.close();
-		conn.close();
-		return rowCount;
+		return blogs.size();
 	}
 	
-	
-	public static void main(String[] args) throws SQLException, IOException {
-		new BlogService().queryByAuthor("jison");
-	}
 }

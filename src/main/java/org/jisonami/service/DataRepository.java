@@ -47,9 +47,9 @@ public class DataRepository {
 
 	public String add(Object o) {
 		Session session = initSession(true);
-		session.save(o);
+		String id = (String) session.save(o);
 		closeSession(session, true);
-		return "";
+		return id;
 	}
 
 	public boolean edit(Object o) {
@@ -65,22 +65,27 @@ public class DataRepository {
 		closeSession(session, true);
 		return true;
 	}
+	
+	public <T> boolean delete(Class<T> clazz, String id){
+		return delete(queryOne(clazz, id));
+	}
 
 	public <T> T queryOne(Class<T> clazz, String id) {
 		Session session = initSession(false);
-		T t = (T) session.load(clazz, id);
+		T t = (T) session.get(clazz, id);
 		closeSession(session, false);
 		return t;
 	}
 
-	public List<?> queryAll(String hql) {
+	public <T> List<T> query(String hql) {
 		Session session = initSession(false);
-		List<?> list = session.createQuery(hql).list();
+		@SuppressWarnings("unchecked")
+		List<T> list = session.createQuery(hql).list();
 		closeSession(session, false);
 		return list;
 	}
 
-	public <T> List<T> queryAll(String hql, Map<String, Object> queryParam) {
+	public <T> List<T> query(String hql, Map<String, Object> queryParam) {
 		Session session = initSession(false);
 		Query query = session.createQuery(hql);
 		for (String key : queryParam.keySet()) {
