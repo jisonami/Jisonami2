@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<properties resource="DBConfig.properties" />
+	
+	<typeAliases>
+		<package name="org.jisonami.entity"/>
+	</typeAliases>
+
+	<!-- 和spring整合后 environments配置将废除-->
+	<environments default="development">
+		<environment id="development">
+		<!-- 使用jdbc事务管理，事务控制由mybatis-->
+			<transactionManager type="JDBC" />
+		<!-- 数据库连接池，由mybatis管理-->
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${user}" />
+				<property name="password" value="${pass}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<!-- 加载 映射文件 -->
+	<mappers>
+		<package name="org.jisonami.mybatis.mapper"/>
+	</mappers>
+	
+</configuration>

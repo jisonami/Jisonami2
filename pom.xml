@@ -11,6 +11,7 @@
 		<junit.version>4.12</junit.version>
 		<springframework.version>4.2.5.RELEASE</springframework.version>
 		<hibernate.version>5.1.0.Final</hibernate.version>
+		<mybatis.version>3.4.0</mybatis.version>
 	</properties>
 
 	<dependencies>
@@ -31,6 +32,12 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis.version}</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>javax.servlet.jsp.jstl</groupId>

@@ -1,13 +1,15 @@
 package org.jisonami.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.jisonami.entity.Blog;
+import org.jisonami.hibernate.DataRepository;
+import org.jisonami.mybatis.MyBatisSessionFactoryBuilder;
+import org.jisonami.mybatis.mapper.BlogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class BlogService {
@@ -16,47 +18,71 @@ public class BlogService {
 	DataRepository repository;
 	
 	public boolean save(Blog blog) {
-		String id = repository.add(blog);
-		if(StringUtils.isEmpty(id)){
-			return false;
-		}
+		SqlSessionFactory sqlSessionFactory = MyBatisSessionFactoryBuilder.buildSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+		blogMapper.save(blog);
+		sqlSession.commit();
+		sqlSession.close();
 		return true;
 	}
 	public boolean delete(String id) {
-		return repository.delete(Blog.class, id);
+		SqlSessionFactory sqlSessionFactory = MyBatisSessionFactoryBuilder.buildSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+		blogMapper.delete(id);
+		sqlSession.commit();
+		sqlSession.close();
+		return true;
 	}
 	public boolean edit(Blog blog) {
-		return repository.edit(blog);
+		SqlSessionFactory sqlSessionFactory = MyBatisSessionFactoryBuilder.buildSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+		blogMapper.edit(blog);
+		sqlSession.commit();
+		sqlSession.close();
+		return true;
 	}
 	public List<Blog> query() {
-		String hql = "from Blog";
-		return repository.query(hql);
+		SqlSessionFactory sqlSessionFactory = MyBatisSessionFactoryBuilder.buildSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+		List<Blog> blogs = blogMapper.query();
+		sqlSession.close();
+		return blogs;
 	}
 	public Blog queryById(String id) {
-		return repository.queryOne(Blog.class, id);
+		SqlSessionFactory sqlSessionFactory = MyBatisSessionFactoryBuilder.buildSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+		Blog blog = blogMapper.queryById(id);
+		sqlSession.close();
+		return blog;
 	}
 	public List<Blog> queryByAuthor(String author) {
-		String hql = "from Blog as b where b.author = :author";
-		Map<String, Object> queryParam = new HashMap<String, Object>();
-		queryParam.put("author", author);
-		return repository.query(hql, queryParam);
+		SqlSessionFactory sqlSessionFactory = MyBatisSessionFactoryBuilder.buildSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+		List<Blog> blogs = blogMapper.queryByAuthor(author);
+		sqlSession.close();
+		return blogs;
 	}
 	public List<Blog> queryByBlogType(String blogTypeId) {
-		// TODO 注意检查hql的模糊查询
-		String hql = "from Blog as b where b.blogType like :blogType";
-		Map<String, Object> queryParam = new HashMap<String, Object>();
-		queryParam.put("blogType", "%"+blogTypeId+"%");
-		return repository.query(hql, queryParam);
+		SqlSessionFactory sqlSessionFactory = MyBatisSessionFactoryBuilder.buildSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+		List<Blog> blogs = blogMapper.queryByBlogType(blogTypeId);
+		sqlSession.close();
+		return blogs;
 	}
 	public int blogCountByBlogType(String blogTypeId) {
-		String hql = "from Blog as b where b.blogType like :blogType";
-		Map<String, Object> queryParam = new HashMap<String, Object>();
-		queryParam.put("blogType", "%"+blogTypeId+"%");
-		List<Blog> blogs = repository.query(hql, queryParam);
-		if(blogs == null){
-			return 0;
-		}
-		return blogs.size();
+		SqlSessionFactory sqlSessionFactory = MyBatisSessionFactoryBuilder.buildSqlSessionFactory();
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		BlogMapper blogMapper = sqlSession.getMapper(BlogMapper.class);
+		int blogCount = blogMapper.blogCountByBlogType(blogTypeId);
+		sqlSession.close();
+		return blogCount;
 	}
 	
 }

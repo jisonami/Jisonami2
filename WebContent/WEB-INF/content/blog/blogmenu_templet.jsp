@@ -11,7 +11,7 @@
 	<span class="blod-font">文章管理</span><br/>
 	
  	<!-- 读取数据库配置信息 -->
-	<fmt:bundle basename="/org/jisonami/sql/DBConfig">
+	<fmt:bundle basename="/DBConfig">
 		<fmt:message key="driver" var="driver"></fmt:message>
 		<fmt:message key="url" var="url"></fmt:message>
 		<fmt:message key="user" var="user"></fmt:message>

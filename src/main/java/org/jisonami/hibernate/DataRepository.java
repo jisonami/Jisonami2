@@ -1,4 +1,4 @@
-package org.jisonami.service;
+package org.jisonami.hibernate;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DataRepository {
+public class DataRepository implements Repository{
 
 	private Session initSession(boolean transactionFlag) {
 		StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
