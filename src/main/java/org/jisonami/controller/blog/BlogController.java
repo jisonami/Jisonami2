@@ -25,11 +25,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class BlogController {
 
 	@Autowired
-	BlogService blogService;
+	private BlogService blogService;
 	@Autowired
-	BlogTypeService blogTypeService;
+	private BlogTypeService blogTypeService;
 	@Autowired
-	BlogBeanCopyFactory blogBeanCopyFactory;
+	private BlogBeanCopyFactory blogBeanCopyFactory;
 	
 	@RequestMapping("blogIndexForward.do")
 	public String blogIndex(ModelMap model){

@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class BlogTypeController {
 
 	@Autowired
-	BlogService blogService;
+	private BlogService blogService;
 	@Autowired
-	BlogTypeService blogTypeService;
+	private BlogTypeService blogTypeService;
 	
 	@RequestMapping("blogTypeManager.do")
 	public String blogTypeManager(@ModelAttribute("username") String username, @RequestParam("blogType") String blogTypeName, ModelMap model){

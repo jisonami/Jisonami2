@@ -8,17 +8,19 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.jisonami.entity.User;
+import org.jisonami.mybatis.mapper.UserMapper;
 import org.junit.Test;
 
 public class MyBatisTest {
 
 	@Test
-	public void queryone() throws IOException{
-		InputStream is = Resources.getResourceAsStream("mybatisconfig/SqlMapConfig.xml");
+	public void queryone(User user) throws IOException{
+		InputStream is = Resources.getResourceAsStream("SqlMapConfig.xml");
 		SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
 		SqlSession session = sessionFactory.openSession();
-		User user = session.selectOne("test.findUserById", "66d3ab5c3f954b6698bcb8627933f237");
-		System.out.println(user);
+		UserMapper userMapper = session.getMapper(UserMapper.class);
+		userMapper.save(user);
+		session.commit();
 		session.close();
 	}
 }

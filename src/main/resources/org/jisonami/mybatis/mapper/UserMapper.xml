@@ -3,16 +3,18 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!-- mapper的命名空间namespace是Mapper接口的全限定名 -->
 <mapper namespace="org.jisonami.mybatis.mapper.UserMapper">
 
+	<!-- id是唯一标识符，与Mapper接口的方法名保持一致，参数类型parameterType是参数类型的全限定名，这里使用的是别名 -->
 	<insert id="save" parameterType="User">
-		<selectKey keyColumn="id" keyProperty="id" resultType="java.lang.String" order="BEFORE">
+		<selectKey keyColumn="id" keyProperty="id" resultType="String" order="BEFORE">
 			select sys_guid() from dual
 		</selectKey>
 		insert into t_user(id, name, password) values(#{id}, #{name}, #{password})
 	</insert>
 	
-	<delete id="delete" parameterType="java.lang.String">
+	<delete id="delete" parameterType="String">
 		delete from t_user where id = #{id}
 	</delete>
 	
@@ -20,11 +22,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update t_user set name = #{name}, password = #{password} where id = #{id}
 	</update>
 	
-	<select id="validate" parameterType="User" resultType="java.lang.String" >
+	<select id="validate" parameterType="User" resultType="String" >
 		select id from t_user where name = #{name} and password = #{password}
 	</select>
 	
-	<select id="exits" parameterType="java.lang.String" resultType="java.lang.String">
+	<select id="exits" parameterType="String" resultType="String">
 		select id from t_user where name = #{name}
 	</select>
 

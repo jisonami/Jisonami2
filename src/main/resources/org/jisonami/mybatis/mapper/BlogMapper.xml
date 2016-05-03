@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id="save" parameterType="Blog">
 		<selectKey keyProperty="id" order="BEFORE" resultType="String">
-			select sys_guid() from dual;
+			select sys_guid() from dual
 		</selectKey>
 		insert into t_blog(id,title,content,blogType,author,publishTime) values(#{id},#{title},#{content},#{blogType},#{author},#{publishTime})
 	</insert>
@@ -33,11 +33,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="queryByBlogType" parameterType="String" resultType="Blog">
-		select * from t_blog where blogtype like '%${blogTypeId}%'
+		select * from t_blog where blogtype like '%${value}%'
 	</select>
 	
 	<select id="blogCountByBlogType" parameterType="String" resultType="int">
-		select count(*) from t_blog where blogtype like '%${blogTypeId}%'
+		select count(*) from t_blog where blogtype like '%${value}%'
 	</select>
 	
 </mapper>

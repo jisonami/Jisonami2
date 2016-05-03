@@ -26,9 +26,9 @@ public class AccountController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	BlogService blogService;
+	private BlogService blogService;
 	@Autowired
-	BlogBeanCopyFactory blogBeanCopyFactory;
+	private BlogBeanCopyFactory blogBeanCopyFactory;
 
 	@RequestMapping("/login.do")
 	public String login(UserVO userVO, ModelMap model) {

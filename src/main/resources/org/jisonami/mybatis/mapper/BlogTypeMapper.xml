@@ -12,7 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into t_blogtype(id,blogAuthor,name) values(#{id},#{blogAuthor},#{name})
 	</insert>
 	
-	<delete id="delete" parameterType="java.lang.String">
+	<delete id="delete" parameterType="String">
 		delete from t_blogtype where id = #{id}
 	</delete>
 	
@@ -20,11 +20,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update t_blogtype set blogAuthor = #{blogAuthor}, name = #{name} where id = #{id}
 	</update>
 	
-	<select id="queryByAuthor" parameterType="java.lang.String" resultType="BlogType">
+	<select id="queryByAuthor" parameterType="String" resultType="BlogType">
 		select * from t_blogtype where blogAuthor = #{blogAuthor}
 	</select>
 	
-	<select id="queryById" parameterType="java.lang.String" resultType="BlogType">
+	<select id="queryById" parameterType="String" resultType="BlogType">
 		select * from t_blogtype where id = #{id}
 	</select>
 	

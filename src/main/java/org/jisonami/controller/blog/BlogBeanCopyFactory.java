@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class BlogBeanCopyFactory{
 
 	@Autowired
-	BlogTypeService blogTypeService;
+	private BlogTypeService blogTypeService;
 	
 	public BeanCopy<Blog, BlogVO> newBlogBeanCopy(){
 		return (f, t) -> {
