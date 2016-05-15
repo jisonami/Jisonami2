@@ -8,6 +8,7 @@
 	<name>Jisonami Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
+	<!-- 直接继承spring-boot-starter-parent成为spring-boot项目 -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
