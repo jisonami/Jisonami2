@@ -2,8 +2,8 @@ package org.jisonami.service;
 
 import java.util.List;
 
+import org.jisonami.dao.BlogRepository;
 import org.jisonami.entity.Blog;
-import org.jisonami.mybatis.mapper.BlogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,34 +11,39 @@ import org.springframework.stereotype.Service;
 public class BlogService {
 	
 	@Autowired
-	private BlogMapper blogMapper;
+	private BlogRepository repository;
 	
 	public boolean save(Blog blog) {
-		blogMapper.save(blog);
+		repository.save(blog);
 		return true;
 	}
 	public boolean delete(String id) {
-		blogMapper.delete(id);
+		repository.delete(id);
 		return true;
 	}
 	public boolean edit(Blog blog) {
-		blogMapper.edit(blog);
+		repository.save(blog);
 		return true;
 	}
 	public List<Blog> query() {
-		return blogMapper.query();
+		return (List<Blog>) repository.findAll();
 	}
 	public Blog queryById(String id) {
-		return blogMapper.queryById(id);
+		return repository.findOne(id);
 	}
 	public List<Blog> queryByAuthor(String author) {
-		return blogMapper.queryByAuthor(author);
+		return repository.findByAuthor(author);
 	}
 	public List<Blog> queryByBlogType(String blogTypeId) {
-		return blogMapper.queryByBlogType(blogTypeId);
+		return repository.findByBlogTypeLike(blogTypeId);
 	}
 	public int blogCountByBlogType(String blogTypeId) {
-		return blogMapper.blogCountByBlogType(blogTypeId);
+		List<Blog> blogs = repository.findByBlogTypeLike(blogTypeId);
+		if(blogs!=null){
+			return blogs.size();
+		} else {
+			return 0;
+		}
 	}
 	
 }
