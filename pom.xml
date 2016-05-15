@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jisonami</groupId>
 	<artifactId>Jisonami2</artifactId>
-	<packaging>jar</packaging>
-	<version>0.0.1</version>
+	<packaging>war</packaging>
+	<version>0.1.1</version>
 	<name>Jisonami Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
@@ -15,17 +15,13 @@
 	</parent>
 
 	<properties>
+		<!-- 使用了lambda表达式，覆盖默认的java版本，默认为1.6 -->
 		<java.version>1.8</java.version>
-		<junit.version>4.12</junit.version>
-		<springframework.version>4.2.5.RELEASE</springframework.version>
+		<!-- 之前用hibernate5.1.0.Final生成的表，使用spring-boot-starter-data-jpa默认引入的hibernate4.3.11会报sql错 -->
 		<hibernate.version>5.1.0.Final</hibernate.version>
-		<mybatis.version>3.4.0</mybatis.version>
-		<mybatis-spring.version>1.3.0</mybatis-spring.version>
 		<oracle14.version>10.2.0.4.0</oracle14.version>
-		<c3p0.version>0.9.1.2</c3p0.version>
+		<taglibs.standard.version>1.1.2</taglibs.standard.version>
 	</properties>
-
-
 
 	<dependencies>
 		<dependency>
@@ -39,34 +35,20 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 		<groupId>org.springframework.boot</groupId> -->
-<!-- 		<artifactId>spring-boot-starter-actuator</artifactId> -->
-<!-- 		</dependency> -->
-		<!-- 引入spring-webmvc与spring-jdbc -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.springframework</groupId> -->
-		<!-- <artifactId>spring-webmvc</artifactId> -->
-		<!-- <version>${springframework.version}</version> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.springframework</groupId> -->
-		<!-- <artifactId>spring-jdbc</artifactId> -->
-		<!-- <version>${springframework.version}</version> -->
-		<!-- </dependency> -->
-		<!-- 引入mybatis与mybatis-spring整合包 -->
+		<!-- maven打war包需要，spring boot的jsp项目必须是war项目，jar项目不支持jsp -->
 		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>${mybatis.version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>${mybatis-spring.version}</version>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<scope>provided</scope>
 		</dependency>
+
 		<!-- 引入oracle数据库jdbc驱动包 -->
 		<dependency>
 			<groupId>com.oracle</groupId>
@@ -77,33 +59,23 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		<!-- 引入c3p0连接池依赖包 -->
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>${c3p0.version}</version>
-		</dependency>
 
+		<!-- jstl依赖包 -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet.jsp.jstl</groupId>
-			<artifactId>javax.servlet.jsp.jstl-api</artifactId>
-			<version>1.2.1</version>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
+			<version>${taglibs.standard.version}</version>
 		</dependency>
 
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- spring boot项目编译插件 -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

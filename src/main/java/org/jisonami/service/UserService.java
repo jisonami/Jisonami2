@@ -1,40 +1,39 @@
 package org.jisonami.service;
 
+import org.jisonami.dao.UserRepository;
 import org.jisonami.entity.User;
-import org.jisonami.mybatis.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class UserService {
 	
 	@Autowired
-	private UserMapper userMapper;
+	private UserRepository repository;
 	
 	public boolean validate(User user){
-		String id = userMapper.validate(user);
-		if(!StringUtils.isEmpty(id)){
+		User entity = repository.findByNameAndPassword(user.getName(), user.getPassword());
+		if(entity!=null){
 			return true;
 		}
 		return false;
 	}
 	public boolean save(User user) {
-		userMapper.save(user);
+		repository.save(user);
 		return true;
 	}
 	
 	public boolean delete(String id) {
-		userMapper.delete(id);
+		repository.delete(id);
 		return true;
 	}
 	public boolean edit(User user) {
-		userMapper.edit(user);
+		repository.save(user);
 		return true;
 	}
 	public boolean exits(User user) {
-		String id = userMapper.exits(user.getName());
-		if(!StringUtils.isEmpty(id)){
+		User entity = repository.findByName(user.getName());
+		if(entity!=null){
 			return true;
 		}
 		return false;
