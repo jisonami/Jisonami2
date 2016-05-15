@@ -11,11 +11,11 @@
 	<span class="blod-font">文章管理</span><br/>
 	
  	<!-- 读取数据库配置信息 -->
-	<fmt:bundle basename="/DBConfig">
-		<fmt:message key="jdbc.driver" var="driver"></fmt:message>
-		<fmt:message key="jdbc.url" var="url"></fmt:message>
-		<fmt:message key="jdbc.user" var="user"></fmt:message>
-		<fmt:message key="jdbc.pass" var="pass"></fmt:message>
+	<fmt:bundle basename="DBConfig" prefix="jdbc.">
+		<fmt:message key="driver" var="driver"></fmt:message>
+		<fmt:message key="url" var="url"></fmt:message>
+		<fmt:message key="user" var="user"></fmt:message>
+		<fmt:message key="pass" var="pass"></fmt:message>
 	</fmt:bundle>
 	<!-- 设置数据源 -->
 	<sql:setDataSource driver="${driver }" url="${url }" user="${user }" password="${pass }"/>
