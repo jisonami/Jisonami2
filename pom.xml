@@ -19,7 +19,7 @@
 		<java.version>1.8</java.version>
 		<!-- 之前用hibernate5.1.0.Final生成的表，使用spring-boot-starter-data-jpa默认引入的hibernate4.3.11会报sql错 -->
 		<hibernate.version>5.1.0.Final</hibernate.version>
-		<oracle14.version>10.2.0.4.0</oracle14.version>
+		<oracle6.version>11.2.0.3</oracle6.version>
 		<taglibs.standard.version>1.1.2</taglibs.standard.version>
 	</properties>
 
@@ -29,9 +29,13 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.boot</groupId> -->
+<!-- 			<artifactId>spring-boot-starter-web</artifactId> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -52,8 +56,8 @@
 		<!-- 引入oracle数据库jdbc驱动包 -->
 		<dependency>
 			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>${oracle14.version}</version>
+			<artifactId>ojdbc6</artifactId>
+			<version>${oracle6.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
