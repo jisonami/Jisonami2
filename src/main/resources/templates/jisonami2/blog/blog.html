@@ -2,70 +2,140 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>我的博客</title>
-	<link th:href="@{static/css/blog/blog.css}" type="text/css" rel="stylesheet" />
-	<script th:src="@{static/js/blog/blog.js}"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的博客</title>
+<link th:href="@{/css/blog/blog.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/blog/blog.js}"></script>
 </head>
 <body>
-	hello
-	<div class="content">
-		
-		<div id="blogcontent">
-			<span id="blogtitlleheader" class="blod-font">标题</span>
-			<span id="publishtimeheader" class="blod-font">发表时间</span>
-			<span id="blogtypeheader" class="blod-font">分类</span>
-			<span id="blogmanagerheader" class="blod-font">管理</span>
-			<br/><br/>
-<!-- 			<c:forEach var="blog" items="${blogs }"> -->
-<!-- 				<span id="blogtitlle"> -->
-<!-- 				<a href='${_ctxPath }/blog/ViewForward.do?blogId=${blog.id}'> -->
-<!-- 					${blog.title } -->
-<!-- 				</a> -->
-<!-- 				</span> -->
-<!-- 				<span id="publishtime"> -->
-<!-- 					<fmt:formatDate value="${blog.publishTime }" pattern="yyyy-MM-dd" /> -->
-<!-- 				</span> -->
-<!-- 				<span id="blogtype"> -->
-<!-- 					读取数据库配置信息 -->
-<!-- 					<fmt:bundle basename="/org/jisonami/sql/DBConfig"> -->
-<!-- 						<fmt:message key="driver" var="driver"></fmt:message> -->
-<!-- 						<fmt:message key="url" var="url"></fmt:message> -->
-<!-- 						<fmt:message key="user" var="user"></fmt:message> -->
-<!-- 						<fmt:message key="pass" var="pass"></fmt:message> -->
-<!-- 					</fmt:bundle> -->
-<!-- 					设置数据源 -->
-<!-- 					<sql:setDataSource driver="${driver }" url="${url }" user="${user }" password="${pass }"/> -->
-<!-- 					<c:set var="blogType" value="${blog.blogType }" ></c:set> -->
-<!-- 					<c:set var="blogTypeIds" value="${fn:split(blogType, ',') }"></c:set> -->
-<!-- 					<c:set var="blogTypes" value=""></c:set> -->
-<!-- 					<c:forEach var="blogTypeId" items="${blogTypeIds }"> -->
-<!-- 						<sql:query var="result"> -->
-<!-- 							select * from t_blogtype t where t.id = ? -->
-<!-- 							<sql:param value="${blogTypeId }" /> -->
-<!-- 						</sql:query> -->
-<!-- 						<c:choose> -->
-<!-- 							<c:when test="${blogTypes!='' }"> -->
-<!-- 								,<br/>${result.rows[0].name } -->
-<!-- 							</c:when> -->
-<!-- 							<c:otherwise> -->
-<!-- 								${result.rows[0].name } -->
-<!-- 							</c:otherwise> -->
-<!-- 						</c:choose> -->
-<!-- 						<c:if test="${blogTypes!='' }" > -->
-<!-- 							<c:set var="blogTypes" value="${blogTypes },"></c:set> -->
-<!-- 						</c:if> -->
-<!-- 						<c:set var="blogTypes" value="${blogTypes }${result.rows[0].name }"></c:set> -->
-<!-- 					</c:forEach> -->
-<!-- 				</span> -->
-<!-- 				<span id="blogmanager"> -->
-<!-- 					<a href='${_ctxPath }/blog/EditForward.do?blogId=${blog.id }'>编辑</a>&nbsp; -->
-<!-- 					<a href='${_ctxPath }/blog/delete.do?blogId=${blog.id }'>删除</a>&nbsp; -->
-<!-- 				</span> -->
-<!-- 				<br/><br/> -->
-<!-- 			</c:forEach> -->
+
+	<div id="headermenu" class="headermenu">
+		<span id="logo" class="logo"> <img alt="Jisonami"
+			th:src="@{/images/logo/Jisonami-Logo.png}" />
+		</span>
+		<div id="menu">
+			<div id="sitemenu">
+				<a href="/">首页</a> <a href="/">博客</a> <a href="/">论坛</a> <a href="/">问答</a>
+				<a href="/">商城</a> <a href="/">网盘</a> <a href="/">搜索</a> <a href="/">更多</a>
+			</div>
+			<div id="usermenu">
+				<a href="/account/logout">退出</a><br />
+			</div>
 		</div>
 	</div>
-	
+	<br />
+	<div class="header">
+		<span id="myblog">我的博客</span>
+	</div>
+
+	<div class="content">
+
+		<div id="blogmenu">
+			<span class="blod-font">博客管理</span><br /> <a
+				href="${_ctxPath }/blog/publishForward.do">发表文章</a><br /> <a
+				href="${_ctxPath }/blog/blogtype/blogTypeManagerForward.do">分类管理</a><br />
+			<br /> <span class="blod-font">文章管理</span><br />
+
+			<!-- 读取数据库配置信息 -->
+<!-- 			<fmt:bundle basename="/org/jisonami/sql/DBConfig"> -->
+<!-- 				<fmt:message key="driver" var="driver"></fmt:message> -->
+<!-- 				<fmt:message key="url" var="url"></fmt:message> -->
+<!-- 				<fmt:message key="user" var="user"></fmt:message> -->
+<!-- 				<fmt:message key="pass" var="pass"></fmt:message> -->
+<!-- 			</fmt:bundle> -->
+			<!-- 设置数据源 -->
+<!-- 			<sql:setDataSource driver="${driver }" url="${url }" user="${user }" -->
+<!-- 				password="${pass }" /> -->
+			<!-- 查询该作者所有博客类型 -->
+<!-- 			<sql:query var="blogTypes"> -->
+<!-- 		select * from t_blogtype t where t.blogAuthor = ? -->
+<!-- 		<sql:param value="${username }" /> -->
+<!-- 			</sql:query> -->
+			<!-- 查询该作者的所有博客数量 -->
+<!-- 			<sql:query var="allBlog"> -->
+<!-- 		select * from t_blog t where t.author = ? -->
+<!-- 		<sql:param value="${username }" /> -->
+<!-- 			</sql:query> -->
+			<!-- 列出博客类型对应的博客数量 -->
+<!-- 			<a href='${_ctxPath }/blog/blogForward.do'>全部博客(${allBlog.rowCount -->
+<!-- 				})</a><br /> -->
+<!-- 			<c:forEach var="blogType" items="${blogTypes.rows }"> -->
+<!-- 				<sql:query var="blogsByBlogType"> -->
+<!-- 			select * from t_blog t where t.blogtype like ? -->
+<!-- 			<sql:param value="%${blogType.id }%" /> -->
+<!-- 				</sql:query> -->
+<!-- 				<span id="blogTypeName"> <a -->
+<!-- 					href='${_ctxPath }/blog/blogForward.do?blogTypeId=${blogType.id }'> -->
+<!-- 						${blogType.name }(${blogsByBlogType.rowCount }) </a> -->
+<!-- 				</span> -->
+<!-- 				<br /> -->
+<!-- 			</c:forEach> -->
+
+			<a href="blog/publishForward.do">草稿箱</a><br /> <a
+				href="blog/publishForward.do">回收站</a><br />
+			<br />
+		</div>
+
+		<div id="blogcontent">
+			<span id="blogtitlleheader" class="blod-font">标题</span> <span
+				id="publishtimeheader" class="blod-font">发表时间</span> <span
+				id="blogtypeheader" class="blod-font">分类</span> <span
+				id="blogmanagerheader" class="blod-font">管理</span> <br /> <br />
+			<!-- 			<c:forEach var="blog" items="${blogs }"> -->
+			<!-- 				<span id="blogtitlle"> -->
+			<!-- 				<a href='${_ctxPath }/blog/ViewForward.do?blogId=${blog.id}'> -->
+			<!-- 					${blog.title } -->
+			<!-- 				</a> -->
+			<!-- 				</span> -->
+			<!-- 				<span id="publishtime"> -->
+			<!-- 					<fmt:formatDate value="${blog.publishTime }" pattern="yyyy-MM-dd" /> -->
+			<!-- 				</span> -->
+			<!-- 				<span id="blogtype"> -->
+			<!-- 					读取数据库配置信息 -->
+			<!-- 					<fmt:bundle basename="/org/jisonami/sql/DBConfig"> -->
+			<!-- 						<fmt:message key="driver" var="driver"></fmt:message> -->
+			<!-- 						<fmt:message key="url" var="url"></fmt:message> -->
+			<!-- 						<fmt:message key="user" var="user"></fmt:message> -->
+			<!-- 						<fmt:message key="pass" var="pass"></fmt:message> -->
+			<!-- 					</fmt:bundle> -->
+			<!-- 					设置数据源 -->
+			<!-- 					<sql:setDataSource driver="${driver }" url="${url }" user="${user }" password="${pass }"/> -->
+			<!-- 					<c:set var="blogType" value="${blog.blogType }" ></c:set> -->
+			<!-- 					<c:set var="blogTypeIds" value="${fn:split(blogType, ',') }"></c:set> -->
+			<!-- 					<c:set var="blogTypes" value=""></c:set> -->
+			<!-- 					<c:forEach var="blogTypeId" items="${blogTypeIds }"> -->
+			<!-- 						<sql:query var="result"> -->
+			<!-- 							select * from t_blogtype t where t.id = ? -->
+			<!-- 							<sql:param value="${blogTypeId }" /> -->
+			<!-- 						</sql:query> -->
+			<!-- 						<c:choose> -->
+			<!-- 							<c:when test="${blogTypes!='' }"> -->
+			<!-- 								,<br/>${result.rows[0].name } -->
+			<!-- 							</c:when> -->
+			<!-- 							<c:otherwise> -->
+			<!-- 								${result.rows[0].name } -->
+			<!-- 							</c:otherwise> -->
+			<!-- 						</c:choose> -->
+			<!-- 						<c:if test="${blogTypes!='' }" > -->
+			<!-- 							<c:set var="blogTypes" value="${blogTypes },"></c:set> -->
+			<!-- 						</c:if> -->
+			<!-- 						<c:set var="blogTypes" value="${blogTypes }${result.rows[0].name }"></c:set> -->
+			<!-- 					</c:forEach> -->
+			<!-- 				</span> -->
+			<!-- 				<span id="blogmanager"> -->
+			<!-- 					<a href='${_ctxPath }/blog/EditForward.do?blogId=${blog.id }'>编辑</a>&nbsp; -->
+			<!-- 					<a href='${_ctxPath }/blog/delete.do?blogId=${blog.id }'>删除</a>&nbsp; -->
+			<!-- 				</span> -->
+			<!-- 				<br/><br/> -->
+			<!-- 			</c:forEach> -->
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="copyright">
+			<span>Copyright © 2016 By jisonami All Rights Reserved.</span>
+		</div>
+	</div>
+
 </body>
 </html>

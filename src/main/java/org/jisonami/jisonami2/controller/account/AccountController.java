@@ -83,7 +83,7 @@ public class AccountController {
 		return "jisonami2/account/register";
 	}
 
-	@RequestMapping(value="/logout.do", method=RequestMethod.GET)
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
 		return "jisonami2/account/login";

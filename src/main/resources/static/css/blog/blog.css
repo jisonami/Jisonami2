@@ -1,6 +1,37 @@
 @import "../common/common.css";
 
-/* ÖÐ¼äÄÚÈÝÑùÊ½ */
+.headermenu{
+	margin:0px auto;
+	padding:5px;
+	width:930px;
+}
+#logo{
+	float:left;
+}
+#menu{
+	float:right;
+	width:800px;
+}
+#sitemenu{
+	float:left;
+}
+#usermenu{
+	float:right;
+}
+
+.header{
+	margin:5px auto;
+	padding:15px;
+	width:930px;
+	height:64px;
+	background:#E6E6E6;
+}
+#myblog{
+	font-size:32px;
+	font-weight: bold;
+}
+
+/* ï¿½Ð¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ */
 .content{
 	margin:5px auto;
 	padding:0px;
@@ -9,6 +40,14 @@
 	height:720px;
 /* 	border:1px solid #A0A0A0; */
 }
+
+#blogmenu{
+	float:left;
+	padding:20px;
+	width:170px;
+	border:1px solid #A0A0A0;
+}
+
 #blogcontent{
 	float:right;
 	padding:15px;
@@ -47,4 +86,14 @@
 	display:inline-block;
 	width:100px;
 }
+
+.footer{
+	margin:0 auto;
+	padding:15px;
+	width:930px;
+	height:16px;
+/* 	background:#E2E2E2; */
+}
+.copyright{
+	margin-left:26%;
 
