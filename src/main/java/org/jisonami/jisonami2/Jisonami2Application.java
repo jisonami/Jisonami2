@@ -9,8 +9,11 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @SpringBootApplication
+@Controller
 public class Jisonami2Application extends SpringBootServletInitializer {
 
 	@Override
@@ -22,6 +25,11 @@ public class Jisonami2Application extends SpringBootServletInitializer {
 	@ConfigurationProperties(locations="classpath:DBConfig.properties", prefix="datasource")
 	public DataSource dataSource(){
 		return DataSourceBuilder.create().build();
+	}
+	
+	@RequestMapping("/")
+	public String index(){
+		return "index";
 	}
 	
 	public static void main(String[] args) {

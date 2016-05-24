@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 <title>新用户注册</title>
 <link href="${_ctxPath }/Resources/css/account/register.css" type="text/css" rel="stylesheet"  />
 </head>
@@ -13,7 +13,7 @@
 <!-- 	</c:if> -->
 <!-- 	</span> -->
 	<div id="registerForm">
-		<form action="register.do" method="post">
+		<form action="/account/add" method="post">
 			<div id="user">
 				用户名：<input name="username" type="text" /><br /> 
 			</div>
@@ -26,7 +26,7 @@
 			</div>
 			<div id="control">
 				<input name="register" type="submit" value="注册" />
-				<a href="login.jsp">返回登陆</a>
+				<a href="/account/login">返回登陆</a>
 			</div>
 		</form>
 	</div>

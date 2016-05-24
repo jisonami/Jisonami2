@@ -16,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @SessionAttributes("username")
+@RequestMapping("/account")
 public class AccountController {
 
 	@Autowired
@@ -30,8 +32,24 @@ public class AccountController {
 	@Autowired
 	private BlogBeanCopyFactory blogBeanCopyFactory;
 
-	@RequestMapping("/login.do")
-	public String login(UserVO userVO, ModelMap model) {
+	@RequestMapping(value="/add", method=RequestMethod.POST)
+	public String add(UserVO userVO, ModelMap model){
+		User user = new User();
+		BeanUtils.copyProperties(userVO, user);
+		user.setName(userVO.getUsername());
+		if(userService.exits(user)){
+			// 提示该用户已注册
+			model.put("error", "用户名已存在！");
+			return "jisonami2/account/register";
+		} else {
+			// 将用户信息存到数据库
+			userService.save(user);
+			return "jisonami2/account/login";
+		}
+	}
+
+	@RequestMapping(value="/login/validate", method=RequestMethod.POST)
+	public String validate(UserVO userVO, ModelMap model){
 		User user = new User();
 		BeanUtils.copyProperties(userVO, user);
 		user.setName(userVO.getUsername());
@@ -44,37 +62,31 @@ public class AccountController {
 				CollectionUtils.copyList(blogs, blogVOs, BlogVO.class, blogBeanCopyFactory.newBlogBeanCopy());
 				model.put("username", user.getName());
 				model.put("blogs", blogVOs);
-				return "blog/blog";
+				return "jisonami2/blog/blog";
 			} else {
 				// 若不匹配，提示用户名或密码错误
 				model.put("error", "用户名或密码错误！");
-				return "../../login";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "../../login";
+		return "jisonami2/account/login";
+	}
+	
+	@RequestMapping("/login")
+	public String login() {
+		return "jisonami2/account/login";
+	}
+	
+	@RequestMapping("/register")
+	public String register() {
+		return "jisonami2/account/register";
 	}
 
-	@RequestMapping("/logout.do")
+	@RequestMapping(value="/logout.do", method=RequestMethod.GET)
 	public String logout(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
-		return "../../login";
+		return "jisonami2/account/login";
 	}
 
-	@RequestMapping("register.do")
-	public String register(UserVO userVO, ModelMap model) {
-		User user = new User();
-		BeanUtils.copyProperties(userVO, user);
-		user.setName(userVO.getUsername());
-		if(userService.exits(user)){
-			// 提示该用户已注册
-			model.put("error", "用户名已存在！");
-			return "../../register";
-		} else {
-			// 将用户信息存到数据库
-			userService.save(user);
-			return "../../login";
-		}
-	}
 }

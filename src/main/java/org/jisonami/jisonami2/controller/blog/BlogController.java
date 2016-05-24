@@ -31,7 +31,7 @@ public class BlogController {
 	@Autowired
 	private BlogBeanCopyFactory blogBeanCopyFactory;
 	
-	@RequestMapping("blogIndexForward.do")
+	@RequestMapping("blogIndex")
 	public String blogIndex(ModelMap model){
 		try {
 			List<Blog> blogs = blogService.query();
@@ -41,10 +41,10 @@ public class BlogController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "/blog/blogIndex";
+		return "/jisonami2/blog/blogIndex";
 	}
 	
-	@RequestMapping("publish.do")
+	@RequestMapping("publish")
 	public String publish(BlogVO blogVO, @ModelAttribute("username") String username, ModelMap model){
 		try {
 			Blog blog = new Blog();
@@ -66,7 +66,7 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping("edit.do")
+	@RequestMapping("edit")
 	public String edit(BlogVO blogVO, String blogId, @ModelAttribute("username") String username, ModelMap model){
 		Blog blog = new Blog();
 		BeanUtils.copyProperties(blogVO, blog);
@@ -95,7 +95,7 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping("delete.do")
+	@RequestMapping("delete")
 	public String delete(String blogId, @ModelAttribute("username") String username, ModelMap model){
 		boolean result = false;
 		result = blogService.delete(blogId);
@@ -117,7 +117,7 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping("blogForward.do")
+	@RequestMapping("all")
 	public String blogForward(String blogTypeId, @ModelAttribute("username") String username, ModelMap model){
 		// 查询该用户下的所有博客
 		List<Blog> blogs = null;
@@ -136,7 +136,7 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping("ViewForward.do")
+	@RequestMapping("view")
 	public String viewForward(String blogId, ModelMap model){
 		Blog blog = null;
 		blog = blogService.queryById(blogId);
@@ -166,7 +166,7 @@ public class BlogController {
 		return "/blog/view";
 	}
 	
-	@RequestMapping("EditForward.do")
+	@RequestMapping("editForward")
 	public String editForward(String blogId, @ModelAttribute("username") String username, ModelMap model){
 		Blog blog = null;
 		blog = blogService.queryById(blogId);
@@ -201,7 +201,7 @@ public class BlogController {
 		return "/blog/edit";
 	}
 	
-	@RequestMapping("publishForward.do")
+	@RequestMapping("publishForward")
 	public String publishForward(@ModelAttribute("username") String username, ModelMap model){
 		List<BlogType> blogTypeList = null;
 		blogTypeList = blogTypeService.queryByAuthor(username);

@@ -12,11 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@RequestMapping("/blog/blogtype/")
+@RequestMapping("/blog/blogtype")
 @SessionAttributes("username")
 public class BlogTypeController {
 
@@ -25,7 +26,7 @@ public class BlogTypeController {
 	@Autowired
 	private BlogTypeService blogTypeService;
 	
-	@RequestMapping("blogTypeManager.do")
+	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public String blogTypeManager(@ModelAttribute("username") String username, @RequestParam("blogType") String blogTypeName, ModelMap model){
 		BlogType blogType = new BlogType();
 		blogType.setBlogAuthor(username);
@@ -41,7 +42,7 @@ public class BlogTypeController {
 		return "/blog/blogTypeManager";
 	}
 	
-	@RequestMapping(value="blogTypeDelete.do")
+	@RequestMapping(value="/blogTypeDelete", method=RequestMethod.GET)
 	public String blogTypeDelete(String blogTypeId, @ModelAttribute("username") String username, ModelMap model){
 		boolean result = false;
 		result = blogTypeService.delete(blogTypeId);
@@ -54,7 +55,7 @@ public class BlogTypeController {
 		return "/blog/blogTypeManager";
 	}
 	
-	@RequestMapping("blogTypeManagerForward.do")
+	@RequestMapping(value="blogTypeManagerForward", method=RequestMethod.GET)
 	public String blogTypeManagerForward(@ModelAttribute("username") String username, ModelMap model){
 		Map<BlogType,Integer> blogTypeInfo = queryBlogTypeInfo(username);
 		model.put("blogTypeInfo", blogTypeInfo);
