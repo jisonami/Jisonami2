@@ -16,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
-@RequestMapping("/blog/")
+@RequestMapping("/blog")
 @SessionAttributes("username")
 public class BlogController {
 
@@ -31,7 +33,7 @@ public class BlogController {
 	@Autowired
 	private BlogBeanCopyFactory blogBeanCopyFactory;
 	
-	@RequestMapping("blogIndex")
+	@RequestMapping(value="/index", method=RequestMethod.GET)
 	public String blogIndex(ModelMap model){
 		try {
 			List<Blog> blogs = blogService.query();
@@ -44,7 +46,7 @@ public class BlogController {
 		return "/jisonami2/blog/blogIndex";
 	}
 	
-	@RequestMapping("publish")
+	@RequestMapping(value="/publish", method=RequestMethod.POST)
 	public String publish(BlogVO blogVO, @ModelAttribute("username") String username, ModelMap model){
 		try {
 			Blog blog = new Blog();
@@ -66,8 +68,8 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping("edit")
-	public String edit(BlogVO blogVO, String blogId, @ModelAttribute("username") String username, ModelMap model){
+	@RequestMapping(value="/edit/{blogId}", method=RequestMethod.POST)
+	public String edit(BlogVO blogVO, @PathVariable("blogId") String blogId, @ModelAttribute("username") String username, ModelMap model){
 		Blog blog = new Blog();
 		BeanUtils.copyProperties(blogVO, blog);
 		blog.setId(blogId);
@@ -95,8 +97,8 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping("delete")
-	public String delete(String blogId, @ModelAttribute("username") String username, ModelMap model){
+	@RequestMapping(value="/delete/{blogId}", method=RequestMethod.GET)
+	public String delete(@PathVariable("blogId") String blogId, @ModelAttribute("username") String username, ModelMap model){
 		boolean result = false;
 		result = blogService.delete(blogId);
 		if(result){
@@ -117,7 +119,7 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping("all")
+	@RequestMapping(value="/all", method=RequestMethod.GET)
 	public String blogForward(String blogTypeId, @ModelAttribute("username") String username, ModelMap model){
 		// 查询该用户下的所有博客
 		List<Blog> blogs = null;
@@ -136,8 +138,8 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping("view")
-	public String viewForward(String blogId, ModelMap model){
+	@RequestMapping(value="/view/{blogId}", method=RequestMethod.GET)
+	public String viewForward(@PathVariable("blogId") String blogId, ModelMap model){
 		Blog blog = null;
 		blog = blogService.queryById(blogId);
 		if(blog!=null){
@@ -166,8 +168,8 @@ public class BlogController {
 		return "/blog/view";
 	}
 	
-	@RequestMapping("editForward")
-	public String editForward(String blogId, @ModelAttribute("username") String username, ModelMap model){
+	@RequestMapping(value="/editForward/{blogId}")
+	public String editForward(@PathVariable("blogId") String blogId, @ModelAttribute("username") String username, ModelMap model){
 		Blog blog = null;
 		blog = blogService.queryById(blogId);
 		if(blog!=null){
@@ -201,7 +203,7 @@ public class BlogController {
 		return "/blog/edit";
 	}
 	
-	@RequestMapping("publishForward")
+	@RequestMapping(value="/publishForward")
 	public String publishForward(@ModelAttribute("username") String username, ModelMap model){
 		List<BlogType> blogTypeList = null;
 		blogTypeList = blogTypeService.queryByAuthor(username);

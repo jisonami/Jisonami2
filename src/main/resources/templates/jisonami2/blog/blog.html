@@ -81,53 +81,21 @@
 				id="publishtimeheader" class="blod-font">发表时间</span> <span
 				id="blogtypeheader" class="blod-font">分类</span> <span
 				id="blogmanagerheader" class="blod-font">管理</span> <br /> <br />
-			<!-- 			<c:forEach var="blog" items="${blogs }"> -->
-			<!-- 				<span id="blogtitlle"> -->
-			<!-- 				<a href='${_ctxPath }/blog/ViewForward.do?blogId=${blog.id}'> -->
-			<!-- 					${blog.title } -->
-			<!-- 				</a> -->
-			<!-- 				</span> -->
-			<!-- 				<span id="publishtime"> -->
-			<!-- 					<fmt:formatDate value="${blog.publishTime }" pattern="yyyy-MM-dd" /> -->
-			<!-- 				</span> -->
-			<!-- 				<span id="blogtype"> -->
-			<!-- 					读取数据库配置信息 -->
-			<!-- 					<fmt:bundle basename="/org/jisonami/sql/DBConfig"> -->
-			<!-- 						<fmt:message key="driver" var="driver"></fmt:message> -->
-			<!-- 						<fmt:message key="url" var="url"></fmt:message> -->
-			<!-- 						<fmt:message key="user" var="user"></fmt:message> -->
-			<!-- 						<fmt:message key="pass" var="pass"></fmt:message> -->
-			<!-- 					</fmt:bundle> -->
-			<!-- 					设置数据源 -->
-			<!-- 					<sql:setDataSource driver="${driver }" url="${url }" user="${user }" password="${pass }"/> -->
-			<!-- 					<c:set var="blogType" value="${blog.blogType }" ></c:set> -->
-			<!-- 					<c:set var="blogTypeIds" value="${fn:split(blogType, ',') }"></c:set> -->
-			<!-- 					<c:set var="blogTypes" value=""></c:set> -->
-			<!-- 					<c:forEach var="blogTypeId" items="${blogTypeIds }"> -->
-			<!-- 						<sql:query var="result"> -->
-			<!-- 							select * from t_blogtype t where t.id = ? -->
-			<!-- 							<sql:param value="${blogTypeId }" /> -->
-			<!-- 						</sql:query> -->
-			<!-- 						<c:choose> -->
-			<!-- 							<c:when test="${blogTypes!='' }"> -->
-			<!-- 								,<br/>${result.rows[0].name } -->
-			<!-- 							</c:when> -->
-			<!-- 							<c:otherwise> -->
-			<!-- 								${result.rows[0].name } -->
-			<!-- 							</c:otherwise> -->
-			<!-- 						</c:choose> -->
-			<!-- 						<c:if test="${blogTypes!='' }" > -->
-			<!-- 							<c:set var="blogTypes" value="${blogTypes },"></c:set> -->
-			<!-- 						</c:if> -->
-			<!-- 						<c:set var="blogTypes" value="${blogTypes }${result.rows[0].name }"></c:set> -->
-			<!-- 					</c:forEach> -->
-			<!-- 				</span> -->
-			<!-- 				<span id="blogmanager"> -->
-			<!-- 					<a href='${_ctxPath }/blog/EditForward.do?blogId=${blog.id }'>编辑</a>&nbsp; -->
-			<!-- 					<a href='${_ctxPath }/blog/delete.do?blogId=${blog.id }'>删除</a>&nbsp; -->
-			<!-- 				</span> -->
-			<!-- 				<br/><br/> -->
-			<!-- 			</c:forEach> -->
+			<ul>
+				<li th:each="blog:${blogs}">
+					<span id="blogtitlle">
+					<a href='${_ctxPath }/blog/ViewForward.do?blogId=${blog.id}' th:text="${blog.title }"></a>
+					</span>
+					<span id="publishtime" th:text="${blog.publishTime }"></span>
+					<span id="blogtype" th:text="${blog.blogTypeNames }">	
+					</span>
+					<span id="blogmanager">
+						<a href='${_ctxPath }/blog/EditForward.do?blogId=${blog.id }'>编辑</a>&nbsp;
+						<a href='${_ctxPath }/blog/delete.do?blogId=${blog.id }'>删除</a>&nbsp;
+					</span>
+					<br/><br/>
+				</li>
+			</ul>
 		</div>
 	</div>
 
