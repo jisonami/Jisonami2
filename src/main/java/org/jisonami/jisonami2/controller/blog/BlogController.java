@@ -3,7 +3,9 @@ package org.jisonami.jisonami2.controller.blog;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jisonami.jisonami2.entity.Blog;
 import org.jisonami.jisonami2.entity.BlogType;
@@ -119,8 +121,8 @@ public class BlogController {
 		return "/blog/blog";
 	}
 	
-	@RequestMapping(value="/all", method=RequestMethod.GET)
-	public String blogForward(String blogTypeId, @ModelAttribute("username") String username, ModelMap model){
+	@RequestMapping(value="/{blogTypeId}", method=RequestMethod.GET)
+	public String blogForward(@PathVariable("blogTypeId") String blogTypeId, @ModelAttribute("username") String username, ModelMap model){
 		// 查询该用户下的所有博客
 		List<Blog> blogs = null;
 		try {
@@ -129,6 +131,13 @@ public class BlogController {
 			} else {
 				blogs = blogService.queryByAuthor(username);
 			}
+			
+			// 全部博客数量
+			model.put("blogCount", blogs.size());
+			// 博客类型查询
+			Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+			model.put("blogTypeInfos", blogTypeInfos);
+			
 			List<BlogVO> blogVOs = new ArrayList<BlogVO>();
 			CollectionUtils.copyList(blogs, blogVOs, BlogVO.class, blogBeanCopyFactory.newBlogBeanCopy());
 			model.put("blogs", blogVOs);
@@ -136,6 +145,17 @@ public class BlogController {
 			e.printStackTrace();
 		}
 		return "/blog/blog";
+	}
+	
+	private Map<BlogType, Integer> queryBlogTypeInfo(String author){
+		Map<BlogType,Integer> blogTypeInfo = new HashMap<BlogType,Integer>();
+		List<BlogType> blogTypes = null;
+		blogTypes = blogTypeService.queryByAuthor(author);
+		for (BlogType bt : blogTypes) {
+			int blogCount = blogService.blogCountByBlogType(bt.getId());
+			blogTypeInfo.put(bt, blogCount);
+		}
+		return blogTypeInfo;
 	}
 	
 	@RequestMapping(value="/view/{blogId}", method=RequestMethod.GET)

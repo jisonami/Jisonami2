@@ -1,12 +1,16 @@
 package org.jisonami.jisonami2.controller.account;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jisonami.jisonami2.controller.blog.BlogBeanCopyFactory;
 import org.jisonami.jisonami2.entity.Blog;
+import org.jisonami.jisonami2.entity.BlogType;
 import org.jisonami.jisonami2.entity.User;
 import org.jisonami.jisonami2.service.BlogService;
+import org.jisonami.jisonami2.service.BlogTypeService;
 import org.jisonami.jisonami2.service.UserService;
 import org.jisonami.jisonami2.util.CollectionUtils;
 import org.jisonami.jisonami2.vo.BlogVO;
@@ -31,6 +35,8 @@ public class AccountController {
 	private BlogService blogService;
 	@Autowired
 	private BlogBeanCopyFactory blogBeanCopyFactory;
+	@Autowired
+	private BlogTypeService blogTypeService;
 
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public String add(UserVO userVO, ModelMap model){
@@ -40,11 +46,11 @@ public class AccountController {
 		if(userService.exits(user)){
 			// 提示该用户已注册
 			model.put("error", "用户名已存在！");
-			return "jisonami2/account/register";
+			return "account/register";
 		} else {
 			// 将用户信息存到数据库
 			userService.save(user);
-			return "jisonami2/account/login";
+			return "account/login";
 		}
 	}
 
@@ -62,7 +68,14 @@ public class AccountController {
 				CollectionUtils.copyList(blogs, blogVOs, BlogVO.class, blogBeanCopyFactory.newBlogBeanCopy());
 				model.put("username", user.getName());
 				model.put("blogs", blogVOs);
-				return "jisonami2/blog/blog";
+				
+				// 全部博客数量
+				model.put("blogCount", blogVOs.size());
+				// 博客类型查询
+				Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(user.getName());
+				model.put("blogTypeInfos", blogTypeInfos);
+				
+				return "blog/blog";
 			} else {
 				// 若不匹配，提示用户名或密码错误
 				model.put("error", "用户名或密码错误！");
@@ -70,23 +83,34 @@ public class AccountController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "jisonami2/account/login";
+		return "account/login";
+	}
+	
+	private Map<BlogType, Integer> queryBlogTypeInfo(String author){
+		Map<BlogType,Integer> blogTypeInfo = new HashMap<BlogType,Integer>();
+		List<BlogType> blogTypes = null;
+		blogTypes = blogTypeService.queryByAuthor(author);
+		for (BlogType bt : blogTypes) {
+			int blogCount = blogService.blogCountByBlogType(bt.getId());
+			blogTypeInfo.put(bt, blogCount);
+		}
+		return blogTypeInfo;
 	}
 	
 	@RequestMapping("/login")
 	public String login() {
-		return "jisonami2/account/login";
+		return "account/login";
 	}
 	
 	@RequestMapping("/register")
 	public String register() {
-		return "jisonami2/account/register";
+		return "account/register";
 	}
 
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
-		return "jisonami2/account/login";
+		return "account/login";
 	}
 
 }
