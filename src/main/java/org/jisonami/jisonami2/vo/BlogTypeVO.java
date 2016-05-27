@@ -13,6 +13,7 @@ public class BlogTypeVO implements Serializable{
 	private String id;
 	private String blogAuthor;
 	private String name;
+	private boolean checked = false;
 	
 	public String getId() {
 		return id;
@@ -32,5 +33,12 @@ public class BlogTypeVO implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
+	public boolean isChecked() {
+		return checked;
+	}
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+	
 	
 }

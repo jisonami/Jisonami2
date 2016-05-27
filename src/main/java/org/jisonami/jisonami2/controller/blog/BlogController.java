@@ -11,7 +11,9 @@ import org.jisonami.jisonami2.entity.Blog;
 import org.jisonami.jisonami2.entity.BlogType;
 import org.jisonami.jisonami2.service.BlogService;
 import org.jisonami.jisonami2.service.BlogTypeService;
+import org.jisonami.jisonami2.util.BeanCopy;
 import org.jisonami.jisonami2.util.CollectionUtils;
+import org.jisonami.jisonami2.vo.BlogTypeVO;
 import org.jisonami.jisonami2.vo.BlogVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,13 @@ public class BlogController {
 			List<BlogVO> blogVOs = new ArrayList<BlogVO>();
 			CollectionUtils.copyList(blogs, blogVOs, BlogVO.class, blogBeanCopyFactory.newBlogBeanCopy());
 			model.put("blogs", blogVOs);
+			
+			// 全部博客数量
+			model.put("blogCount", blogs.size());
+			// 博客类型查询
+			Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+			model.put("blogTypeInfos", blogTypeInfos);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -72,10 +81,10 @@ public class BlogController {
 	
 	@RequestMapping(value="/edit/{blogId}", method=RequestMethod.POST)
 	public String edit(BlogVO blogVO, @PathVariable("blogId") String blogId, @ModelAttribute("username") String username, ModelMap model){
-		Blog blog = new Blog();
-		BeanUtils.copyProperties(blogVO, blog);
-		blog.setId(blogId);
-		blog.setAuthor(username);
+		Blog blog = blogService.queryById(blogId);
+		BeanUtils.copyProperties(blogVO, blog, new String[]{"id", "author","publishTime"});
+//		blog.setId(blogId);
+//		blog.setAuthor(username);
 		blog.setBlogType(blogVO.getBlogTypeIds());
 		blog.setEditTime(new Date());
 		boolean result = false;
@@ -88,13 +97,20 @@ public class BlogController {
 				List<BlogVO> blogVOs = new ArrayList<BlogVO>();
 				CollectionUtils.copyList(blogs, blogVOs, BlogVO.class, blogBeanCopyFactory.newBlogBeanCopy());
 				model.put("blogs", blogVOs);
+				
+				// 全部博客数量
+				model.put("blogCount", blogs.size());
+				// 博客类型查询
+				Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+				model.put("blogTypeInfos", blogTypeInfos);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			// 返回博客列表
 		}else{
 			// 编辑不成功，返回错误提示
-			
+			System.out.println("编辑不成功");
 		}
 		return "/blog/blog";
 	}
@@ -111,12 +127,41 @@ public class BlogController {
 				List<BlogVO> blogVOs = new ArrayList<BlogVO>();
 				CollectionUtils.copyList(blogs, blogVOs, BlogVO.class, blogBeanCopyFactory.newBlogBeanCopy());
 				model.put("blogs", blogVOs);
+				
+				// 全部博客数量
+				model.put("blogCount", blogs.size());
+				// 博客类型查询
+				Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+				model.put("blogTypeInfos", blogTypeInfos);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}else{
 			// 编辑不成功，返回错误提示
 			
+		}
+		return "/blog/blog";
+	}
+	
+	@RequestMapping(value="/all", method=RequestMethod.GET)
+	public String blogAllByAuthor(@ModelAttribute("username") String username, ModelMap model){
+		// 查询该用户下的所有博客
+		List<Blog> blogs = null;
+		try {
+			blogs = blogService.queryByAuthor(username);
+			
+			// 全部博客数量
+			model.put("blogCount", blogs.size());
+			// 博客类型查询
+			Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+			model.put("blogTypeInfos", blogTypeInfos);
+			
+			List<BlogVO> blogVOs = new ArrayList<BlogVO>();
+			CollectionUtils.copyList(blogs, blogVOs, BlogVO.class, blogBeanCopyFactory.newBlogBeanCopy());
+			model.put("blogs", blogVOs);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return "/blog/blog";
 	}
@@ -133,7 +178,7 @@ public class BlogController {
 			}
 			
 			// 全部博客数量
-			model.put("blogCount", blogs.size());
+			model.put("blogCount", blogService.queryByAuthor(username).size());
 			// 博客类型查询
 			Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
 			model.put("blogTypeInfos", blogTypeInfos);
@@ -159,7 +204,7 @@ public class BlogController {
 	}
 	
 	@RequestMapping(value="/view/{blogId}", method=RequestMethod.GET)
-	public String viewForward(@PathVariable("blogId") String blogId, ModelMap model){
+	public String viewForward(@PathVariable("blogId") String blogId, @ModelAttribute("username") String username, ModelMap model){
 		Blog blog = null;
 		blog = blogService.queryById(blogId);
 		if(blog!=null){
@@ -185,6 +230,13 @@ public class BlogController {
 		if(blogTypes!=null && !"".equals(blogTypes)){
 			model.put("blogTypes", blogTypes);
 		}
+		
+		// 全部博客数量
+		model.put("blogCount", blogService.queryByAuthor(username).size());
+		// 博客类型查询
+		Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+		model.put("blogTypeInfos", blogTypeInfos);
+
 		return "/blog/view";
 	}
 	
@@ -218,7 +270,28 @@ public class BlogController {
 		
 		List<BlogType> blogTypeList = null;
 		blogTypeList = blogTypeService.queryByAuthor(username);
-		model.put("blogTypeList", blogTypeList);
+		List<BlogTypeVO> blogTypeVOList = new ArrayList<BlogTypeVO>();
+		try {
+			CollectionUtils.copyList(blogTypeList, blogTypeVOList, BlogTypeVO.class, new BeanCopy<BlogType, BlogTypeVO>() {
+				@Override
+				public void copyProperties(BlogType f, BlogTypeVO t) {
+					BeanUtils.copyProperties(f, t);
+					if(blogTypeIds.contains(t.getId())){
+						t.setChecked(true);
+					}
+				}
+			});
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		model.put("blogTypeList", blogTypeVOList);
+		
+		// 全部博客数量
+		model.put("blogCount", blogService.queryByAuthor(username).size());
+		// 博客类型查询
+		Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+		model.put("blogTypeInfos", blogTypeInfos);
 		
 		return "/blog/edit";
 	}
@@ -228,6 +301,13 @@ public class BlogController {
 		List<BlogType> blogTypeList = null;
 		blogTypeList = blogTypeService.queryByAuthor(username);
 		model.put("blogTypeList", blogTypeList);
+		
+		// 全部博客数量
+		model.put("blogCount", blogService.queryByAuthor(username).size());
+		// 博客类型查询
+		Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+		model.put("blogTypeInfos", blogTypeInfos);
+		
 		return "/blog/publish";
 	}
 	

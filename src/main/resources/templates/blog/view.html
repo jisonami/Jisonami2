@@ -1,1 +1,77 @@
-view
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的博客</title>
+<link th:href="@{/css/blog/blog.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/blog/blog.js}"></script>
+</head>
+<body>
+
+	<div id="headermenu" class="headermenu">
+		<span id="logo" class="logo"> <img alt="Jisonami"
+			th:src="@{/images/logo/Jisonami-Logo.png}" />
+		</span>
+		<div id="menu">
+			<div id="sitemenu">
+				<a href="/">首页</a> <a href="/">博客</a> <a href="/">论坛</a> <a href="/">问答</a>
+				<a href="/">商城</a> <a href="/">网盘</a> <a href="/">搜索</a> <a href="/">更多</a>
+			</div>
+			<div id="usermenu">
+				<a href="/account/logout">退出</a><br />
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="header">
+		<span id="myblog">我的博客</span>
+	</div>
+
+	<div class="content">
+
+		<div id="blogmenu">
+			<span class="blod-font">博客管理</span><br /> <a
+				href="/blog/publishForward">发表文章</a><br /> <a
+				href="/blog/blogtype/blogTypeManagerForward">分类管理</a><br />
+			<br /> <span class="blod-font">文章管理</span><br />
+
+			<!-- 列出博客类型对应的博客数量 -->
+			<a href='/blog/all'>
+				<span th:text="${'全部博客(' + blogCount +')'}"></span>
+			</a><br />
+			<span id="blogTypeName" th:each="blogTypeInfo:${blogTypeInfos}"> 
+				<a th:href="${'/blog/' + blogTypeInfo.key.id }">
+					<span th:text="${blogTypeInfo.key.name + '(' + blogTypeInfo.value + ')'}"></span>
+				</a>
+				<br/>
+			</span>
+
+			<a href="#">草稿箱</a><br /> <a
+				href="#">回收站</a><br />
+			<br />
+		</div>
+
+		<div id="blogcontent">
+			<a href="/blog/all">返回博客列表</a><br/><br/>
+			<input name="blogId" type="hidden" value="${blog.id }"/>
+			<span th:text="'博客标题：' + ${blog.title }"></span>
+			<br/><br/>
+			<span th:if="${not #lists.isEmpty(blog.publishTime)}">
+				<span th:text="'发布时间：' + ${#dates.format(blog.publishTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+			</span>
+			<br/><br/>
+			<span th:text="'博客类型：' + ${blogTypes }"></span>
+			<br/><br/>
+			<span th:text="'博客正文：' + ${blog.content }"></span>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="copyright">
+			<span>Copyright © 2016 By jisonami All Rights Reserved.</span>
+		</div>
+	</div>
+
+</body>
+</html>

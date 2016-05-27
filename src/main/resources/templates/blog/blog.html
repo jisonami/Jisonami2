@@ -19,6 +19,7 @@
 				<a href="/">商城</a> <a href="/">网盘</a> <a href="/">搜索</a> <a href="/">更多</a>
 			</div>
 			<div id="usermenu">
+				<span th:text="'欢迎' + ${username} + ','"></span>
 				<a href="/account/logout">退出</a><br />
 			</div>
 		</div>
@@ -37,18 +38,18 @@
 			<br /> <span class="blod-font">文章管理</span><br />
 
 			<!-- 列出博客类型对应的博客数量 -->
-			<a href='/blog/'>
-				<span th:text="${'全部博客(' + blogCount +')'}"></span>
+			<a href='/blog/all'>
+				<span th:text="'全部博客(' + ${blogCount} + ')'"></span>
 			</a><br />
 			<span id="blogTypeName" th:each="blogTypeInfo:${blogTypeInfos}"> 
-				<a th:href="${'/blog/' + blogTypeInfo.key.id }">
-					<span th:text="${blogTypeInfo.key.name + '(' + blogTypeInfo.value + ')'}"></span>
+				<a th:href="'/blog/' + ${blogTypeInfo.key.id }">
+					<span th:text="${blogTypeInfo.key.name} + '(' + ${blogTypeInfo.value} + ')'"></span>
 				</a>
 				<br/>
 			</span>
 
-			<a href="/blog/publishForward">草稿箱</a><br /> <a
-				href="/blog/publishForward">回收站</a><br />
+			<a href="#">草稿箱</a><br /> <a
+				href="#">回收站</a><br />
 			<br />
 		</div>
 
@@ -60,14 +61,19 @@
 			<ul>
 				<li th:each="blog:${blogs}">
 					<span id="blogtitlle">
-					<a th:href="${'/blog/view/'+blog.id}" th:text="${blog.title }"></a>
+					<a th:href="'/blog/view/'+${blog.id}" th:text="${blog.title }"></a>
 					</span>
-					<span id="publishtime" th:text="${blog.publishTime }"></span>
+					<span th:if="${not #lists.isEmpty(blog.publishTime)}">
+						<span id="publishtime" th:text="${#dates.format(blog.publishTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+					</span>
+					<span th:if="${#lists.isEmpty(blog.publishTime)}">
+						<span id="publishtime" th:text="${blog.publishTime}"></span>
+					</span>
 					<span id="blogtype" th:text="${blog.blogTypeNames }">	
 					</span>
 					<span id="blogmanager">
-						<a th:href="${'/blog/EditForward?blogId=' + blog.id }">编辑</a>&nbsp;
-						<a th:href="${'/blog/delete?blogId=' + blog.id }">删除</a>&nbsp;
+						<a th:href="'/blog/editForward/' + ${blog.id }">编辑</a>&nbsp;
+						<a th:href="'/blog/delete/' + ${blog.id }">删除</a>&nbsp;
 					</span>
 					<br/><br/>
 				</li>

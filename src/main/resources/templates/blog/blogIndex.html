@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>我的博客</title>
+<link th:href="@{/css/blog/blog.css}" type="text/css" rel="stylesheet" />
+<script th:src="@{/js/blog/blog.js}"></script>
+</head>
+<body>
+
+	<div id="headermenu" class="headermenu">
+		<span id="logo" class="logo"> <img alt="Jisonami"
+			th:src="@{/images/logo/Jisonami-Logo.png}" />
+		</span>
+		<div id="menu">
+			<div id="sitemenu">
+				<a href="/">首页</a> <a href="/">博客</a> <a href="/">论坛</a> <a href="/">问答</a>
+				<a href="/">商城</a> <a href="/">网盘</a> <a href="/">搜索</a> <a href="/">更多</a>
+			</div>
+			<div id="usermenu">
+				<a href="/account/logout">退出</a><br />
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="header">
+		<span id="myblog">我的博客</span>
+	</div>
+
+	<div class="content">
+
+		<div id="blogmenu">
+			
+		</div>
+
+		<div id="blogcontent">
+			<span id="blogtitlleheader" class="blod-font">标题</span> <span
+				id="publishtimeheader" class="blod-font">发表时间</span> <span
+				id="blogtypeheader" class="blod-font">分类</span> <span
+				id="blogmanagerheader" class="blod-font">管理</span> <br /> <br />
+			<ul>
+				<li th:each="blog:${blogs}">
+					<span id="blogtitlle">
+					<a th:href="'/blog/view/'+${blog.id}" th:text="${blog.title }"></a>
+					</span>
+					<span th:if="${not #lists.isEmpty(blog.publishTime)}">
+						<span id="publishtime" th:text="${#dates.format(blog.publishTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+					</span>
+					<span th:if="${#lists.isEmpty(blog.publishTime)}">
+						<span id="publishtime" th:text="${blog.publishTime}"></span>
+					</span>
+					<span id="blogtype" th:text="${blog.blogTypeNames }">	
+					</span>
+					<span id="blogmanager">
+						<a th:href="'/blog/editForward/' + ${blog.id }">编辑</a>&nbsp;
+						<a th:href="'/blog/delete/' + ${blog.id }">删除</a>&nbsp;
+					</span>
+					<br/><br/>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="copyright">
+			<span>Copyright © 2016 By jisonami All Rights Reserved.</span>
+		</div>
+	</div>
+
+</body>
+</html>

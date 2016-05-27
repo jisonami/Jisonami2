@@ -38,7 +38,7 @@ public class BlogService {
 		return repository.findByBlogTypeLike(blogTypeId);
 	}
 	public int blogCountByBlogType(String blogTypeId) {
-		List<Blog> blogs = repository.findByBlogTypeLike(blogTypeId);
+		List<Blog> blogs = repository.findByBlogTypeLike("%"+blogTypeId+"%");
 		if(blogs!=null){
 			return blogs.size();
 		} else {

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,7 @@ public class BlogTypeController {
 	@Autowired
 	private BlogTypeService blogTypeService;
 	
-	@RequestMapping(value="/add", method=RequestMethod.GET)
+	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public String blogTypeManager(@ModelAttribute("username") String username, @RequestParam("blogType") String blogTypeName, ModelMap model){
 		BlogType blogType = new BlogType();
 		blogType.setBlogAuthor(username);
@@ -34,21 +35,27 @@ public class BlogTypeController {
 		boolean result = false;
 		result = blogTypeService.save(blogType);
 		if(result){
-			Map<BlogType,Integer> blogTypeInfo = queryBlogTypeInfo(username);
-			model.put("blogTypeInfo", blogTypeInfo);
+			// 全部博客数量
+			model.put("blogCount", blogService.queryByAuthor(username).size());
+			// 博客类型查询
+			Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+			model.put("blogTypeInfos", blogTypeInfos);
 		}else {
 			// 保存博客类型出错
 		}
 		return "/blog/blogTypeManager";
 	}
 	
-	@RequestMapping(value="/blogTypeDelete", method=RequestMethod.GET)
-	public String blogTypeDelete(String blogTypeId, @ModelAttribute("username") String username, ModelMap model){
+	@RequestMapping(value="/blogTypeDelete/{blogTypeId}", method=RequestMethod.GET)
+	public String blogTypeDelete(@PathVariable("blogTypeId") String blogTypeId, @ModelAttribute("username") String username, ModelMap model){
 		boolean result = false;
 		result = blogTypeService.delete(blogTypeId);
 		if(result){
-			Map<BlogType,Integer> blogTypeInfo = queryBlogTypeInfo(username);
-			model.put("blogTypeInfo", blogTypeInfo);
+			// 全部博客数量
+			model.put("blogCount", blogService.queryByAuthor(username).size());
+			// 博客类型查询
+			Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+			model.put("blogTypeInfos", blogTypeInfos);
 		} else {
 			
 		}
@@ -57,8 +64,11 @@ public class BlogTypeController {
 	
 	@RequestMapping(value="blogTypeManagerForward", method=RequestMethod.GET)
 	public String blogTypeManagerForward(@ModelAttribute("username") String username, ModelMap model){
-		Map<BlogType,Integer> blogTypeInfo = queryBlogTypeInfo(username);
-		model.put("blogTypeInfo", blogTypeInfo);
+		// 全部博客数量
+		model.put("blogCount", blogService.queryByAuthor(username).size());
+		// 博客类型查询
+		Map<BlogType, Integer> blogTypeInfos = queryBlogTypeInfo(username);
+		model.put("blogTypeInfos", blogTypeInfos);
 		return "/blog/blogTypeManager";
 	}
 
