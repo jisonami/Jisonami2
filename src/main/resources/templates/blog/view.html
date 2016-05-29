@@ -41,7 +41,7 @@
 				<span th:text="${'全部博客(' + blogCount +')'}"></span>
 			</a><br />
 			<span id="blogTypeName" th:each="blogTypeInfo:${blogTypeInfos}"> 
-				<a th:href="${'/blog/' + blogTypeInfo.key.id }">
+				<a th:href="'/blog/' + ${blogTypeInfo.key.id }">
 					<span th:text="${blogTypeInfo.key.name + '(' + blogTypeInfo.value + ')'}"></span>
 				</a>
 				<br/>
