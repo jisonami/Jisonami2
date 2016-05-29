@@ -73,11 +73,11 @@
 
 		<!-- json -->
 		<!-- 引入fastjson依赖 -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.12</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.alibaba</groupId> -->
+<!-- 			<artifactId>fastjson</artifactId> -->
+<!-- 			<version>1.2.12</version> -->
+<!-- 		</dependency> -->
 		<!-- 引jackson依赖 -->
 		<!-- jackson核心包，必选，提供基于“流模式”解析的API -->
 		<dependency>
@@ -95,10 +95,10 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		<!-- 引入gson依赖 -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.google.code.gson</groupId> -->
+<!-- 			<artifactId>gson</artifactId> -->
+<!-- 		</dependency> -->
 	</dependencies>
 
 	<build>
