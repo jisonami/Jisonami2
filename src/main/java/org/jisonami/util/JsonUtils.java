@@ -2,10 +2,7 @@ package org.jisonami.util;
 
 import org.jisonami.entity.User;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class JsonUtils {
 
@@ -31,12 +28,12 @@ public class JsonUtils {
 	}
 	
 	private static void fastjson(){
-		// 将Java对象序列化为Json字符串
-		String objectToJson = JSON.toJSONString(initUser());
-		System.out.println(objectToJson);
-		// 将Json字符串反序列化为Java对象
-		User user = JSON.parseObject(objectToJson, User.class);
-		System.out.println(user);
+//		// 将Java对象序列化为Json字符串
+//		String objectToJson = JSON.toJSONString(initUser());
+//		System.out.println(objectToJson);
+//		// 将Json字符串反序列化为Java对象
+//		User user = JSON.parseObject(objectToJson, User.class);
+//		System.out.println(user);
 	}
 	
 	private static void jackson() throws Exception{
@@ -50,12 +47,12 @@ public class JsonUtils {
 	}
 	
 	private static void gson(){
-		Gson gson = new GsonBuilder().create();
-		// 将Java对象序列化为Json字符串
-		String objectToJson = gson.toJson(initUser());
-		System.out.println(objectToJson);
-		// 将Json字符串反序列化为Java对象
-		User user = gson.fromJson(objectToJson, User.class);
-		System.out.println(user);
+//		Gson gson = new GsonBuilder().create();
+//		// 将Java对象序列化为Json字符串
+//		String objectToJson = gson.toJson(initUser());
+//		System.out.println(objectToJson);
+//		// 将Json字符串反序列化为Java对象
+//		User user = gson.fromJson(objectToJson, User.class);
+//		System.out.println(user);
 	}
 }
