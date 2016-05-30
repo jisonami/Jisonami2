@@ -5,3 +5,5 @@
 这个项目将尽可能使用一些流行的框架来实现功能，将要实现的功能与Jisonami项目基本一致。
 
 目前这个项目将要使用Hibernate或MyBaties完成数据库操作，使用Spring-MVC来完成页面跳转功能，使用JSP完成页面展示，使用前端JavaScript框架比如JQuery，BootStrap等等完成HTML网页交互效果的增强。并使用Maven来管理项目依赖关系。
+
+test
