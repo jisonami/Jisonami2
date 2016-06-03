@@ -14,10 +14,10 @@
 	<div id="content">
 		<c:choose>
 			<c:when test="${username != null }">
-				<h1>登录成功！</h1>
+				<span class="tips">登录成功！</span>
 			</c:when>
 			<c:otherwise>
-				<h1>请登录</h1>
+				<span class="tips">请先登录！</span>
 			</c:otherwise>
 		</c:choose>
 	</div>

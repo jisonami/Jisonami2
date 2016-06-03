@@ -39,9 +39,10 @@ public class AccountController {
 	}
 
 	@RequestMapping("/logout.do")
-	public String logout(SessionStatus sessionStatus) {
+	public String logout(ModelMap model, SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
-		return "login";
+		model.clear();
+		return "index";
 	}
 
 	@RequestMapping("register.do")
