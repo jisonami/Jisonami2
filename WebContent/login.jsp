@@ -11,12 +11,12 @@
 <body>
 	<jsp:include page="/Resources/jsp/common/menu_templet.jsp"></jsp:include>
 
-	<span style="color:red">
-	<c:if test="${error!=null}">
-		${error }
-	</c:if>
-	</span>
 	<div id="loginForm">
+		<span style="color:red">
+		<c:if test="${error!=null}">
+			${error }
+		</c:if>
+		</span>
 		<form action="login.do" method="post">
 			<div id="user">
 				用户名：<input name="username" type="text" /><br/>
@@ -27,7 +27,6 @@
 			<div id="control">
 				<input type="submit" value="登陆" />
 				<a href="register.jsp">注册</a>
-				<a href="register.jsp">找回密码</a>
 			</div>
 		</form>
 	</div>

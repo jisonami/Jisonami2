@@ -15,7 +15,7 @@
     </context:component-scan>
     <!-- 配置springmvc的视图解析器 -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
-	p:prefix="/WEB-INF/content/" p:suffix=".jsp">
+	p:prefix="/" p:suffix=".jsp">
 	</bean>
 
 </beans>

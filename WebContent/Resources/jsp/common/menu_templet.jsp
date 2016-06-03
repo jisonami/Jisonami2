@@ -10,20 +10,12 @@
 	</span>
 	<div id="menu">
 		<div id="sitemenu">
-			<a href="${_ctxPath }/index.jsp">首页</a> <a
-				href="${_ctxPath }/index.jsp">博客</a> <a
-				href="${_ctxPath }/index.jsp">论坛</a> <a
-				href="${_ctxPath }/index.jsp">问答</a> <a
-				href="${_ctxPath }/index.jsp">商城</a> <a
-				href="${_ctxPath }/index.jsp">网盘</a> <a
-				href="${_ctxPath }/index.jsp">搜索</a> <a
-				href="${_ctxPath }/index.jsp">更多</a>
+			
 		</div>
 		<div id="usermenu">
 			<c:choose>
 				<c:when test="${username != null }">
 				欢迎${username },
-				<a href='${_ctxPath }/blog/blogForward.do'>我的博客</a>
 					<a href='${_ctxPath }/logout.do'>退出</a>
 					<br />
 				</c:when>

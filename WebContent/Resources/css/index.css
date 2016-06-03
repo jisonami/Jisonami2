@@ -1,0 +1,8 @@
+@import "common/common.css";
+
+#content{
+	margin:5px auto;
+	padding:0px;
+	width:960px;
+	height:640px;
+}

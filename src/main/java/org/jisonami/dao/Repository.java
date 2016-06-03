@@ -1,9 +1,9 @@
-package org.jisonami.hibernate;
+package org.jisonami.dao;
 
 import java.util.List;
 import java.util.Map;
 
-public interface Repository {
+public interface Repository{
 
 	public String add(Object o);
 

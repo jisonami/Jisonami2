@@ -1,15 +1,7 @@
-package org.jisonami.controller.account;
+package org.jisonami.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jisonami.controller.blog.BlogBeanCopyFactory;
-import org.jisonami.entity.Blog;
 import org.jisonami.entity.User;
-import org.jisonami.service.BlogService;
 import org.jisonami.service.UserService;
-import org.jisonami.util.CollectionUtils;
-import org.jisonami.vo.BlogVO;
 import org.jisonami.vo.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +17,6 @@ public class AccountController {
 
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private BlogService blogService;
-	@Autowired
-	private BlogBeanCopyFactory blogBeanCopyFactory;
 
 	@RequestMapping("/login.do")
 	public String login(UserVO userVO, ModelMap model) {
@@ -37,29 +25,23 @@ public class AccountController {
 		user.setName(userVO.getUsername());
 		try {
 			if (userService.validate(user)) {
-				// 若匹配，跳转到blog主页
-				// 查询该用户下的所有博客
-				List<Blog> blogs = blogService.queryByAuthor(user.getName());
-				List<BlogVO> blogVOs = new ArrayList<BlogVO>();
-				CollectionUtils.copyList(blogs, blogVOs, BlogVO.class, blogBeanCopyFactory.newBlogBeanCopy());
-				model.put("username", user.getName());
-				model.put("blogs", blogVOs);
-				return "blog/blog";
+				// 若匹配，跳转到登陆成功页面
+				
+				return "index";
 			} else {
-				// 若不匹配，提示用户名或密码错误
 				model.put("error", "用户名或密码错误！");
-				return "../../login";
+				return "login";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "../../login";
+		return "login";
 	}
 
 	@RequestMapping("/logout.do")
 	public String logout(SessionStatus sessionStatus) {
 		sessionStatus.setComplete();
-		return "../../login";
+		return "login";
 	}
 
 	@RequestMapping("register.do")
@@ -70,11 +52,11 @@ public class AccountController {
 		if(userService.exits(user)){
 			// 提示该用户已注册
 			model.put("error", "用户名已存在！");
-			return "../../register";
+			return "register";
 		} else {
 			// 将用户信息存到数据库
 			userService.save(user);
-			return "../../login";
+			return "login";
 		}
 	}
 }
