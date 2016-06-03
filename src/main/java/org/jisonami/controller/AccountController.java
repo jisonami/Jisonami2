@@ -26,7 +26,7 @@ public class AccountController {
 		try {
 			if (userService.validate(user)) {
 				// 若匹配，跳转到登陆成功页面
-				
+				model.put("username", user.getName());
 				return "index";
 			} else {
 				model.put("error", "用户名或密码错误！");
