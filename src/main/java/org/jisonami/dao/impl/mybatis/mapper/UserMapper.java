@@ -1,4 +1,4 @@
-package org.jisonami.dao.impl.mybatis;
+package org.jisonami.dao.impl.mybatis.mapper;
 
 import org.jisonami.entity.User;
 

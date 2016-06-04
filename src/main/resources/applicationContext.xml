@@ -30,7 +30,7 @@
 <!-- 		<property name="sqlSessionFactory" ref="sqlSessionFactory"/> -->
 <!-- 	</bean> -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="org.jisonami.dao.impl.mybatis"></property>
+		<property name="basePackage" value="org.jisonami.dao.impl.mybatis.mapper"></property>
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
 

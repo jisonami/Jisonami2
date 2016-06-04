@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- mapper的命名空间namespace是Mapper接口的全限定名 -->
-<mapper namespace="org.jisonami.dao.impl.mybatis.UserMapper">
+<mapper namespace="org.jisonami.dao.impl.mybatis.mapper.UserMapper">
 
 	<!-- id是唯一标识符，与Mapper接口的方法名保持一致，参数类型parameterType是参数类型的全限定名，这里使用的是别名 -->
 	<insert id="save" parameterType="User">
