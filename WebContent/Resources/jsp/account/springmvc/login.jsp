@@ -7,6 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>登陆页面</title>
 <link href="${_ctxPath }/Resources/css/account/login.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="${_ctxPath }/Resources/js/account/verify.js"></script>
 </head>
 <body>
 	<jsp:include page="/Resources/jsp/common/menu_templet.jsp"></jsp:include>
@@ -17,7 +18,7 @@
 			${error }
 		</c:if>
 		</span>
-		<form action="login.do" method="post">
+		<form action="${_ctxPath }/springmvc/login.do" method="post">
 			<div id="user">
 				用户名：<input name="username" type="text" /><br/>
 			</div>
@@ -25,7 +26,7 @@
 				密&nbsp;码：<input name="password" type="password" /><br/>
 			</div>
 			<div id="control">
-				<input type="submit" value="登陆" />
+				<input type="submit" value="登陆" onclick="return checkLogin(this.form)"/>
 				<a href="register.jsp">注册</a>
 			</div>
 		</form>

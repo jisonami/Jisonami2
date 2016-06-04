@@ -1,3 +1,4 @@
+package org.jisonami.dao.impl.hibernate;
 //package org.jisonami.hibernate;
 //
 //import java.util.List;

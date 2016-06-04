@@ -7,17 +7,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>新用户注册</title>
 <link href="${_ctxPath }/Resources/css/account/register.css" type="text/css" rel="stylesheet"  />
+<script type="text/javascript" src="${_ctxPath }/Resources/js/account/verify.js"></script>
 </head>
 <body>
 	<jsp:include page="/Resources/jsp/common/menu_templet.jsp"></jsp:include>
 
-	<span style="color:red">
-	<c:if test="${error!=null}">
-		${error }
-	</c:if>
-	</span>
 	<div id="registerForm">
-		<form action="register.do" method="post">
+		<span style="color:red">
+		<c:if test="${error!=null}">
+			${error }
+		</c:if>
+		</span>
+		<form action="${_ctxPath }/springmvc/register.do" method="post">
 			<div id="user">
 				用户名：<input name="username" type="text" /><br /> 
 			</div>
@@ -29,7 +30,7 @@
 			<br />
 			</div>
 			<div id="control">
-				<input name="register" type="submit" value="注册" />
+				<input name="register" type="submit" value="注册" onclick="return checkRegister(this.form)"/>
 				<a href="login.jsp">返回登陆</a>
 			</div>
 		</form>

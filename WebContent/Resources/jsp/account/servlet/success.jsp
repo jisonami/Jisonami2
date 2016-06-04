@@ -9,7 +9,7 @@
 <link href="${_ctxPath }/Resources/css/index.css" type="text/css" rel="stylesheet">
 </head>
 <body>
-	<jsp:include page="/Resources/jsp/common/menu_templet.jsp"></jsp:include>
+	<jsp:include page="/Resources/jsp/common/servlet/menu_templet.jsp"></jsp:include>
 
 	<div id="content">
 		<c:choose>

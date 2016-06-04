@@ -1,13 +1,12 @@
 @import "common/common.css";
 
 #content{
-	margin:5px auto;
-	padding:0px;
-	width:960px;
-	height:640px;
+	margin:150px auto;
+	padding:80px;
+	height:100px;
+	width:280px;
 }
 
 .tips{
-	margin:300px;
-	font-size: 60px;
+	font-size: 48px;
 }

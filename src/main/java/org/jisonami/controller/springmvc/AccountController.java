@@ -1,7 +1,7 @@
-package org.jisonami.controller;
+package org.jisonami.controller.springmvc;
 
 import org.jisonami.entity.User;
-import org.jisonami.service.UserService;
+import org.jisonami.service.impl.UserService;
 import org.jisonami.vo.UserVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
+@RequestMapping("/springmvc")
 @SessionAttributes("username")
 public class AccountController {
 
@@ -27,15 +28,15 @@ public class AccountController {
 			if (userService.validate(user)) {
 				// 若匹配，跳转到登陆成功页面
 				model.put("username", user.getName());
-				return "index";
+				return "Resources/jsp/account/springmvc/success";
 			} else {
 				model.put("error", "用户名或密码错误！");
-				return "login";
+				return "Resources/jsp/account/springmvc/login";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "login";
+		return "Resources/jsp/account/springmvc/login";
 	}
 
 	@RequestMapping("/logout.do")
@@ -50,14 +51,19 @@ public class AccountController {
 		User user = new User();
 		BeanUtils.copyProperties(userVO, user);
 		user.setName(userVO.getUsername());
-		if(userService.exits(user)){
-			// 提示该用户已注册
-			model.put("error", "用户名已存在！");
-			return "register";
-		} else {
-			// 将用户信息存到数据库
-			userService.save(user);
-			return "login";
+		try {
+			if(userService.exits(user)){
+				// 提示该用户已注册
+				model.put("error", "用户名已存在！");
+				return "Resources/jsp/account/springmvc/register";
+			} else {
+				// 将用户信息存到数据库
+				userService.save(user);
+				return "Resources/jsp/account/springmvc/login";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return "Resources/jsp/account/springmvc/register";
 	}
 }

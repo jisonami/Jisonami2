@@ -15,7 +15,9 @@
 		<div id="usermenu">
 			<c:choose>
 				<c:when test="${username != null }">
-				欢迎${username }
+				欢迎${username },
+					<a href='${_ctxPath }/servlet/logout.do'>退出</a>
+					<br />
 				</c:when>
 				<c:otherwise>
 				您还未登录！
