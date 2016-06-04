@@ -4,9 +4,29 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-	<!-- 给entity起别名，在mapper配置文件中写sql语句时会用到 -->
+	<properties resource="DBConfig.properties" />
+	
 	<typeAliases>
 		<package name="org.jisonami.entity"/>
 	</typeAliases>
+
+	<!-- 和spring整合后 environments配置将废除-->
+	<environments default="development">
+		<environment id="development">
+		<!-- 使用jdbc事务管理，事务控制由mybatis-->
+			<transactionManager type="JDBC" />
+		<!-- 数据库连接池，由mybatis管理-->
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.user}" />
+				<property name="password" value="${jdbc.pass}" />
+			</dataSource>
+		</environment>
+	</environments>
+	<!-- 加载 映射文件 -->
+	<mappers>
+		<package name="org.jisonami.dao.impl.mybatis.mapper"/>
+	</mappers>
 
 </configuration>
