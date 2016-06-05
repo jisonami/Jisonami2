@@ -34,6 +34,11 @@
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
 
+	<!-- 配置spring-jdbctemplate -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
 	<!-- 自动扫描spring注解，排除springmvc已扫描的Controller注解 -->
     <context:component-scan base-package="org.jisonami">
     	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
