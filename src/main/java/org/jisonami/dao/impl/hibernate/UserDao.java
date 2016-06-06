@@ -4,18 +4,18 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 import org.jisonami.dao.IUserDao;
 import org.jisonami.entity.User;
+import org.jisonami.util.DBUtils;
 
 public class UserDao implements IUserDao {
 
@@ -101,14 +101,13 @@ public class UserDao implements IUserDao {
 	}
 
 	private Session initSession(boolean transactionFlag) {
-		StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
-				.configure().build();
-		Metadata metadata = new MetadataSources(standardRegistry)
-				.getMetadataBuilder()
-				.applyImplicitNamingStrategy(
-						ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
-				.build();
-		SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
+		Configuration configuration = new Configuration().
+				addProperties(getDBProperties()).
+				addAnnotatedClass(User.class).
+				configure(); 
+		ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()  
+		         .applySettings(configuration.getProperties()).build();  
+		SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry); 
 		Session session = sessionFactory.openSession();
 	
 		if (transactionFlag) {
@@ -128,4 +127,12 @@ public class UserDao implements IUserDao {
 		return true;
 	}
 	
+	private Properties getDBProperties(){
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.connection.driver_class", DBUtils.getDriver());
+		properties.setProperty("hibernate.connection.url", DBUtils.getUrl());
+		properties.setProperty("hibernate.connection.username", DBUtils.getUserName());
+		properties.setProperty("hibernate.connection.password", DBUtils.getPassword());
+		return properties;
+	}
 }
