@@ -113,7 +113,7 @@ public class UserDao implements IUserDao {
 	@Override
 	public boolean selectByNameAndPassword(User user) throws SQLException {
 		Connection conn = DBUtils.getConnection();
-		String sql = "select name,password from t_user t where t.name = ? and t.password = ?";
+		String sql = "select * from t_user t where t.name = ? and t.password = ?";
 		PreparedStatement preStmt = conn.prepareStatement(sql);
 		preStmt.setString(1, user.getName());
 		preStmt.setString(2, user.getPassword());
