@@ -1,0 +1,39 @@
+一、单例模式
+	Spring中所有的Bean在BeanFactory的管理下默认都是单例的，
+	若需要使Bean不是单例，则需要配置bean的scope=""属性，该属性接受一下几个值：singleton，prototype，request ，session和global session
+	其中request ，session和global session这几个值只在web程序中有效
+	Spring2.0之前使用singleton="true|false"属性配置BeanFactory管理下一个bean是否为单例
+	
+二、工厂方法模式
+	Spring中的BeanFactory的设计就是用了工厂方法模式，提供了多个抽象的重载的getBean()方法，
+	而具体的getBean()方法实现由不同的实现类实现，这其实是使用了抽象工厂方法
+	
+三、代理模式
+	Spring在实现AOP的Advice时用了代理模式，使用了JDK动态代理和cglib动态代理两种实现，
+	对于实现了接口的类Spring使用JDK动态代理实现，没有实现接口的类Spring使用cglib动态代理实现
+	
+四、策略模式
+	Spring在实现Advice时使用了两种代理实现，具体决定使用哪一种代理则是使用了策略模式
+	
+五、装饰器模式
+	Spring中所有类名以Wrapper和Decorator结尾的类都是使用了装饰器模式
+	
+六、观察者模式
+	Spring里面的Listener设计使用了观察者模式，监听器在某个对象发生变化时，通知相关联的对象
+	
+七、中介者模式
+	SpringMVC中DispatcherServlet的设计就使用了中介者模式，
+	DispatcherServlet将配置的所有请求URL拦截，然后根据对应的URL执行对应的方法
+	
+八、模板方法模式
+	还是以BeanFactory为例，这里的类层次结构有点多了，
+	BeanFactory--》ListableBeanFactory--》ApplicationContext--》ConfigurableApplicationContext--》AbstractApplicationContext--》GenericApplicationContext
+	AbstractApplicationContext这个抽象类里面实现了BeanFactory定义的多个重载的getBean()方法，这些方法的实现都调用了一个getBeanFactory()的抽象方法，
+	其中一个getBean()方法实现如下
+	@Override
+	public Object getBean(String name) throws BeansException {
+		assertBeanFactoryActive();
+		return getBeanFactory().getBean(name);
+	}
+	这个抽象方法的实现放到了其子类GenericApplicationContext中，这就是典型的模板方法的实现，父类实现了结构上的逻辑，留下一个钩子方法给子类实现。
+	很多时候继承的用法就是用模板方法才会使用继承，否则大部分时候请考虑组合，组合优于继承嘛
